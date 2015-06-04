@@ -64,12 +64,13 @@ gem 'httparty'
 gem "select2-rails"
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'database_cleaner'
+  gem 'nyan-cat-formatter'
+  gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
   gem 'factory_girl_rails'
-  # gem 'selenium-webdriver'
-  # gem 'capybara-webkit', '~>1.4.1'
   gem 'poltergeist'
+  gem 'faker'
 end
 
 # Use ActiveModel has_secure_password
