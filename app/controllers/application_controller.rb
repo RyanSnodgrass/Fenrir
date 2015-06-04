@@ -4,17 +4,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # before_filter CASClient::Frameworks::Rails::Filter
-  
-  def authenticate!
-    CASClient::Frameworks::Rails::Filter.client.proxy_callback_url =
-      "https://data-test.cc.nd.edu:8443/cas_proxy_callback/receive_pgt"
-    CASClient::Frameworks::Rails::Filter.filter(self)
 
-    if session[:cas_pgt]
-      logger.debug ":cas_pgt: " + session[:cas_pgt].to_s
+  def authenticate!
+    
+    if !request.session.has_key?("cas")
+      puts "rendering 401"
+      render status: 401, text: ""
     end
   end
-
 
   def current_user
     @current_user ||= cas_user
