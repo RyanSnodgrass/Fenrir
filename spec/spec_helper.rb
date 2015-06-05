@@ -20,6 +20,7 @@ require 'capybara/rspec'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
 
+  config.include FactoryGirl::Syntax::Methods
   ENV["RAILS_ENV"] = 'rspec'
 
 

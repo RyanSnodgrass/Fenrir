@@ -5,7 +5,7 @@ require "httparty"
 require "will_paginate/array"
 
 class OfficesController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, :only => :authenticated_show
+  # before_filter CASClient::Frameworks::Rails::Filter, :only => :authenticated_show
   skip_before_action :verify_authenticity_token
 
   # display all offices

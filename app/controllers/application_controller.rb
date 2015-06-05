@@ -6,9 +6,7 @@ class ApplicationController < ActionController::Base
   # before_filter CASClient::Frameworks::Rails::Filter
 
   def authenticate!
-    
     if !request.session.has_key?("cas")
-      puts "rendering 401"
       render status: 401, text: ""
     end
   end
