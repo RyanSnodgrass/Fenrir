@@ -8,11 +8,11 @@ describe 'User Logging In'do
     expect(page).to have_content('Log In')
   end
 
-  it 'can take them to their profile' do
-    visit('/users/myprofile')
-    fill_in 'username', with: 'johndoe'
-    fill_in 'password', with: 'any password'
-    click_button 'Login'
-    expect(page).to have_content('Welcome To The BI Portal')
-  end
+  # it 'can take them to their profile' do
+  #   visit('/users/myprofile')
+  #   fill_in 'username', with: 'johndoe'
+  #   fill_in 'password', with: 'any password'
+  #   click_button 'Login'
+  #   expect(page).to have_content('Welcome To The BI Portal')
+  # end
 end

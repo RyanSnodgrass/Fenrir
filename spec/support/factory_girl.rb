@@ -10,8 +10,10 @@ RSpec.configure do |config|
   ]
   config.before(:suite) do
     begin
-      DatabaseCleaner.clean
-      FactoryGirl.lint
+      # DatabaseCleaner.clean
+      # FactoryGirl.lint
+    ensure
+      # DatabaseCleaner.clean
     end
   end
 end

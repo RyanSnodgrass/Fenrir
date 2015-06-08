@@ -17,9 +17,14 @@
 require 'factory_girl_rails'
 require 'capybara/rspec'
 
+module LoginHelper
+  def establish_current_user(user)
+    session['cas'] = { 'user' => user.net_id }
+  end
+end
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-
+  config.include LoginHelper
   config.include FactoryGirl::Syntax::Methods
   ENV["RAILS_ENV"] = 'rspec'
 
