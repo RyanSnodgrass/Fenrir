@@ -2,7 +2,6 @@
 # It returns the net_id of the user if it does
 # and 'anonymous' if it does not
 class UserFinder
-  UserFinder
   def initialize(session)
     @session = session
   end

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    
+    @current_user ||= CurrentUser.find_by(UserFinder.new(request.session).name)
   end
 
   

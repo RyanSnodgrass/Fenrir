@@ -34,41 +34,27 @@ RSpec.describe ApplicationController do
     end
   end
 
-  context 'current_user helper method' do
-    # it 'passing in a nonexistant user, will return anonymous' do
-    #   anon = create(:anonymous)
-    #   na = User.new
-    #   na.net_id = 'nonexistant'
-    #   establish_current_user(na)
-    #   expect(subject.current_user.net_id).to eq(anon.net_id)
-    # end
-    # it 'passing in valid existing user, returns that user' do
-    #   anon = create(:anonymous)
-    #   my_user = create(:user)
-    #   establish_current_user(my_user)
-    #   expect(subject.current_user.net_id).to eq(my_user.net_id)
-    # end
+  context 'current_user set method' do
+    it 'passing in a nonexistant user, will return anonymous' do
+      anon = create(:anonymous)
+      na = build(:user)
+      establish_current_user(na)
+      expect(subject.current_user.net_id).to eq(anon.net_id)
+    end
+    it 'passing in valid existing user, returns that user' do
+      anon = create(:anonymous)
+      my_user = create(:user)
+      establish_current_user(my_user)
+      expect(subject.current_user.net_id).to eq(my_user.net_id)
+    end
+    it 'current_user is a User object' do
+      my_user = create(:user)
+      establish_current_user(my_user)
+      expect(subject.current_user).to be_a_kind_of(User)
+    end
+    it 'passing in no session variable, it returns anonymous user' do
+      anon = create(:anonymous)
+      expect(subject.current_user.net_id).to eq(anon.net_id)
+    end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
