@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'UserFinder Class' do
   let (:cas_session) do
-    { cas: {'user'=>'rsnodgra',
+    { 'cas' => {'user'=>'rsnodgra',
       'ticket'=>'ST-516271-B9XA0vT6ncxmPgzDsUKt-cas',
       'extra_attributes'=>{}} }
   end
@@ -45,7 +45,6 @@ RSpec.describe Guaranteeduser::UserFinder, :type => :controller do
       user = create(:user)
       establish_current_user(user)
       get :index
-      puts session['cas']['user']
       i = Guaranteeduser::UserFinder.new(session).name
       expect(i).to eq(user.net_id)
     end
