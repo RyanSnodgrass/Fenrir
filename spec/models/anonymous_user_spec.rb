@@ -12,4 +12,7 @@ describe 'AnonymousUser class' do
     @anonymous_user = AnonymousUser.find
     expect(@anonymous_user.net_id).to eq('anonymous')
   end
+  it "raises an error if it can't find an anonymous user" do
+    expect { AnonymousUser.find }.to raise_error(StandardError)
+  end
 end
