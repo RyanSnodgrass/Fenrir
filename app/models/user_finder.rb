@@ -1,7 +1,8 @@
 # This class serves to check if the session variable contains the ('cas') value
 # It returns the net_id of the user if it does
 # and 'anonymous' if it does not
-class Guaranteeduser::UserFinder
+class UserFinder
+  UserFinder
   def initialize(session)
     @session = session
   end
