@@ -5,7 +5,8 @@ require "httparty"
 require "will_paginate/array"
 
 class ReportsController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter
+  before_filter :authenticate!
+
   skip_before_action :verify_authenticity_token
 
   def update

@@ -12,6 +12,7 @@ source 'https://rubygems.org'
 gem 'fog', '~> 1.23.0', require: "fog/aws/storage" # for uploading to Amazon S3.  http://railscasts.com/episodes/383-uploading-to-amazon-s3
 gem 'mini_magick'
 gem 'carrierwave'
+gem 'neo4j', '~> 4.1.1'
 # ---------------------------------------------------------------------
 #image upload
 
@@ -57,19 +58,21 @@ gem 'thread_safe' , '~> 0.3.1'
 
 gem 'will_paginate', '~> 3.0.5'
 
-gem 'rubycas-client', '2.3.10.rc1'
+gem 'rack-cas', '~> 0.10.1'
+# gem 'rubycas-client', '2.3.10.rc1'
 gem 'rails-config'
 gem 'httparty'
 
 gem "select2-rails"
 
-group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0'
+group :development, :rspec do
+  gem 'database_cleaner'
+  gem 'nyan-cat-formatter'
+  gem 'rspec-rails', '~> 3.0'
   gem 'capybara'
-  gem 'factory_girl_rails'
-  # gem 'selenium-webdriver'
-  # gem 'capybara-webkit', '~>1.4.1'
+  gem "factory_girl_rails", "~> 4.0"
   gem 'poltergeist'
+  gem 'faker'
 end
 
 # Use ActiveModel has_secure_password

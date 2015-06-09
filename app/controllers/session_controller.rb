@@ -1,6 +1,6 @@
 class SessionController < ApplicationController
 
-    before_filter CASClient::Frameworks::Rails::Filter, :only => :login
+    # before_filter CASClient::Frameworks::Rails::Filter, :only => :login
 
 
     # Upon login, takes you to report gallery
