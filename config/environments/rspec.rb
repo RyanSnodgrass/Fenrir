@@ -8,10 +8,16 @@ Huginn::Application.configure do
   # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
 
+  # In /cloud_strife/vagrantrailsdevmachine/Fenrir, the test neo4j doesn't have security it seemed
+  # config.neo4j.session_options = { basic_auth: { username: 'neo4j', password: 'password'} } 
+  config.neo4j.session_type = :server_db
+  config.neo4j.session_path = 'http://localhost:7475'
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
+
+  config.rack_cas.fake = true
 
   # suggested action to solve capybara conflicts with rails 4.x
   config.allow_concurrency = false
@@ -39,6 +45,6 @@ Huginn::Application.configure do
   config.active_support.deprecation = :stderr
 
   # CAS proxy settings
-  config.cas_base_url = "https://login.nd.edu/cas/"
-  config.cas_proxy_callback_url = "https://data-test.cc.nd.edu/cas_proxy_callback/receive_pgt"
+  # config.cas_base_url = "https://login.nd.edu/cas/"
+  # config.cas_proxy_callback_url = "https://data-test.cc.nd.edu/cas_proxy_callback/receive_pgt"
 end
