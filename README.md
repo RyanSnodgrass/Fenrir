@@ -1,9 +1,6 @@
 # README
 
-[![Code Climate](https://codeclimate.com/github/ndoit/huginn/badges/gpa.svg)](https://codeclimate.com/github/ndoit/huginn)
-
-[![Test Coverage](https://codeclimate.com/github/ndoit/huginn/badges/coverage.svg)](https://codeclimate.com/github/ndoit/huginn)
-[![Coverage Status](https://coveralls.io/repos/ndoit/huginn/badge.svg)](https://coveralls.io/r/ndoit/huginn)
+[![Build Status](https://travis-ci.org/RyanSnodgrass/Fenrir.svg?branch=master)](https://travis-ci.org/RyanSnodgrass/Fenrir)
 Huginn pro
 ---------
 The front end for the BI Portal
