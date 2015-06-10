@@ -3,16 +3,11 @@
 # We want an error to be raised in the event of no anonymous user found
 # That is a special case and it should notify us instead of seeping nil
 # down the code pipeline
-class AnonymousUser < User
-  property :net_id, default: 'anonymous'
-  # class NoAnonymousUserFound < StandardError; end
-  # def initialize
-  #   User.find_by(net_id: 'anonymous') or
-  #     raise NoAnonymousUserFound
-  # end
+class NonExistentUser < User
+  property :net_id, default: 'NonExistentUser'
 
   def logged_in?
-    false
+    true
   end
 
   def can(action)

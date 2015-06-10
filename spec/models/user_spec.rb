@@ -8,12 +8,10 @@ describe 'User Class' do
   it 'is valid' do
     expect(user).to be_valid
   end
-  # it "won't create if not unique" do
-  #   user1 = User.new
-  #   user2 = User.new
-  #   user1.net_id = 'example'
-  #   user2.net_id = 'example'
-  #   user1.save
-  #   expect(user2.save).to raise_error(NameError)
-  # end
+  it 'can do anything!' do
+    expect(user.can(:action)).to be true
+  end
+  it 'is logged in' do
+    expect(user.logged_in?).to be true
+  end
 end

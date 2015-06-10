@@ -19,7 +19,7 @@
           %ul.right
             / Divider
             - url = request.path.pluralize
-            - if current_user
+            - if current_user.logged_in?
               %li
                 = link_to 'Report Gallery', "/browse/report", :style => ("background: #666666;" if url == "/browse/reports")
               / %li
@@ -32,8 +32,8 @@
             %li
               = link_to 'Glossary', "/browse/term", :style => ("background: #666666;" if url == "/browse/terms")
             %li.has-dropdown
-              - if current_user
-                %a{:href => "#"}= current_user.name
+              - if current_user.logged_in?
+                %a{:href => "#"}= current_user.net_id
                 %ul.dropdown
                   %li
                     = link_to 'My Security Roles', "/users/myprofile"

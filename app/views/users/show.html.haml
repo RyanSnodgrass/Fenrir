@@ -8,7 +8,7 @@
   .large-12.columns
     %h3.page-title My User Name
 
-    %h5= @current_user.net_id
+    %h5= current_user.net_id
 
 / - unless Rails.env == "production"
 /   // Currently, @my_access does not send back `admin_emeritus` field

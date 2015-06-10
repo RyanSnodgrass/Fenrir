@@ -11,9 +11,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= CurrentUser.find_by(UserFinder.new(request.session).name)
+    if session.key?('cas')
+      @current_user = User.find_by(net_id: session['cas']['user']) || NonExistentUser.new
+    else
+      @current_user = AnonymousUser.new
+    end
   end
 
-  
   helper_method :current_user
 end
