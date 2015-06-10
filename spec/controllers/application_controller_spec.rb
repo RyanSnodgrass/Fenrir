@@ -48,13 +48,11 @@ RSpec.describe ApplicationController do
     end
     context 'when logged in' do
       it 'will return User class' do
-        my_user = create(:user)
-        establish_current_user(my_user)
+        establish_current_user(user)
         expect(subject.current_user).to be_a_kind_of(User)
       end
       it 'has access to User class methods' do
-        my_user = create(:user)
-        establish_current_user(my_user)
+        establish_current_user(user)
         expect(subject.current_user.can(:anything)).to eq(true)
         expect(subject.current_user.logged_in?).to eq(true)
       end
@@ -68,8 +66,7 @@ RSpec.describe ApplicationController do
     end
     context 'switches appropriately' do
       it 'when logging in to out ' do
-        my_user = create(:user)
-        establish_current_user(my_user)
+        establish_current_user(user)
         expect(subject.current_user).to be_a_kind_of(User)
         session.delete('cas')
         expect(subject.current_user).to be_a_kind_of(AnonymousUser)

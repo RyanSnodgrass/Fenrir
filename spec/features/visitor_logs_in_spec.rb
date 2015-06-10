@@ -1,6 +1,6 @@
 require 'rails_helper'
 require 'capybara/rails'
-require 'rack/fake_cas'
+# require 'rack/fake_cas'
 describe 'User Logging In'do
   let(:user) { create(:user) }
   it "will first visit my app's root page" do
