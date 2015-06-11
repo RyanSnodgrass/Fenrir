@@ -12,17 +12,18 @@ Rails.application.routes.draw do
 
   get "guide_search" => 'guide#search'
 
-  get "terms" => 'terms#index'
+  # get "terms" => 'terms#index'
 
   get "/login" => 'session#login'
   get "/logout" => 'session#logout'
 
     #get "terms/partial_search" => 'terms#partial_search'
   get "terms/partial_search" => 'terms#partial_search'
-  get "terms/:id" => 'terms#show'
-  put "terms/:id" => 'terms#update'  #BMR
-  delete "terms/:id" => 'terms#destroy'  #SMM
-  post "terms" => 'terms#create' #SMM
+  resources :terms
+  # get "terms/:id" => 'terms#show'
+  # put "terms/:id" => 'terms#update'  #BMR
+  # delete "terms/:id" => 'terms#destroy'  #SMM
+  # post "terms" => 'terms#create' #SMM
 
   get "cas_test" => 'cas_tests#index'
 

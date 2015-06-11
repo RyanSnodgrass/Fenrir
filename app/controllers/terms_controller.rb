@@ -5,81 +5,27 @@ require "httparty"
 require "will_paginate/array"
 
 class TermsController < ApplicationController
-
-  ### when all security actions are on, it asks to sign in for #show
-  ### when all are off, #update errors out
-
-  # before_filter CASClient::Frameworks::Rails::Filter
-  ### commenting out before_filter seems to fix everything
-  
-  unless @current_user
-    skip_before_action :verify_authenticity_token
-  end
-
-
   def update
-    response = Muninn::Adapter.put( "/terms/#{URI.encode(params[:id])}", session[:cas_user], session[:cas_pgt], params[:termJSON] )
     render status: response.code, json: response.body
   end
 
   def create
 
-    response = Muninn::Adapter.post( '/terms/', session[:cas_user], session[:cas_pgt], params[:term])
     render status: response.code, json: response.body
   end
 
   def destroy
-    response = Muninn::Adapter.delete( "/terms/id/#{URI.encode(params[:id])}", session[:cas_user], session[:cas_pgt] )
     render status: response.code, json: response.body
   end
 
 
  
   def show
-
+    @term = Term.find_by(name: params[:id])
       # GET OFFICES
-    office_resp = Muninn::Adapter.get( "/offices", session[:cas_user], session[:cas_pgt] )
-    office_json = JSON.parse( office_resp.body )["results"]
-    logger.debug("These are the show offices: #{office_json}")
-    offices = []
-    office_json.each do |office|
-      offices << {id: office["data"]["name"], text: office["data"]["name"]}
-    end
-    @office_json = offices.to_json
-
-    permission_group_resp = Muninn::Adapter.get( "/permission_groups", session[:cas_user], session[:cas_pgt] )
-    permission_group_json = JSON.parse( permission_group_resp.body )["results"]
-    logger.debug("These are the show groups: #{permission_group_json}")
-    groups = []
-    permission_group_json.each do |group|
-      groups << {id: group["data"]["id"], text: group["data"]["name"]}
-    end
-    @permission_groups = groups
-
-
+      # GET PERMISSION GROUPS
       # GET TERM
-    muninn_response = Muninn::Adapter.get( "/terms/" + URI::encode(params[:id]), session[:cas_user], session[:cas_pgt] )
-    @term = JSON.parse(muninn_response.body)
-    @term["reports"] ||= []
-    @term_group = {}
-    if @term["permission_groups"].present?
-      @term_group = @term["permission_groups"].first["name"]
-    end
       # GET STAKEHOLDERS FOR TERM
-    @stakeholder_hash = {}
-    @stakeholder_hash["Responsible"] = []
-    @stakeholder_hash["Accountable"] = []
-    @stakeholder_hash["Consult"] = []
-    @stakeholder_hash["Inform"] = []
-
-
-    stake_json = @term["stakeholders"]
-    if stake_json != nil
-     stake_json.each do |stake|
-          @stakeholder_hash[stake["stake"]] ||= []
-        @stakeholder_hash[stake["stake"]] << {id: stake["id"], text: stake["name"]}
-      end
-    end
   end
   
   def search_string(search_s)
@@ -100,8 +46,7 @@ class TermsController < ApplicationController
 
 
   def index
-
-  logger.debug("Querying Muninn...")
+    @terms = Term.all
   
    page =params[:page]
    if params.has_key?(:tags)
@@ -146,5 +91,23 @@ class TermsController < ApplicationController
     end
   end
 
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
 
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def post_params
+    params.require(:post).permit(
+      :name,
+      :definition,
+      :source_system,
+      :possible_values,
+      :notes,
+      :data_availability,
+      :sensitivity_classification,
+      :access_designation,
+      :sensitivity_access_notes)
+  end
 end

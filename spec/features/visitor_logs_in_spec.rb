@@ -14,8 +14,7 @@ describe 'User Logging In'do
     fill_in 'username', with: user.net_id
     fill_in 'password', with: 'any password'
     click_button 'Login'
-    expect(page).to have_content('My Security Roles')
-    expect(page).to have_content(user.net_id)
+    expect(page).to have_content('My User Name')
   end
   it 'will ask to authenticate before taking to user profile' do
     visit('/users/myprofile')
