@@ -21,6 +21,12 @@ module LoginHelper
   def establish_current_user(user)
     session['cas'] = { 'user' => user.net_id }
   end
+  def login
+    visit('/users/myprofile')
+    fill_in 'username', with: user.net_id
+    fill_in 'password', with: 'any password'
+    click_button 'Login'
+  end
 end
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

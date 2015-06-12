@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   
   root 'welcome#index'
 
-  
+
 
   get '/up' => 'reports#upload_test'
   post '/up' => 'reports#upload', as: :report_image_upload
@@ -12,31 +12,23 @@ Rails.application.routes.draw do
 
   get "guide_search" => 'guide#search'
 
-  # get "terms" => 'terms#index'
-
   get "/login" => 'session#login'
   get "/logout" => 'session#logout'
 
-    #get "terms/partial_search" => 'terms#partial_search'
   get "terms/partial_search" => 'terms#partial_search'
   resources :terms
-  # get "terms/:id" => 'terms#show'
-  # put "terms/:id" => 'terms#update'  #BMR
-  # delete "terms/:id" => 'terms#destroy'  #SMM
-  # post "terms" => 'terms#create' #SMM
 
   get "cas_test" => 'cas_tests#index'
 
 
   get "offices" => 'offices#index'
-
   get "offices/partial_search" => 'offices#partial_search'
   get "offices/:id" => 'offices#show'
   put "offices/:id" => 'offices#update'  #SMM
   delete "offices/:id" => 'offices#destroy'  #SMM
   post "offices" => 'offices#create' #SMM
 
-    get "permission_groups" => 'permissiongroupss#index'
+  get "permission_groups" => 'permissiongroupss#index'
 
   get "permission_groups/partial_search" => 'permission_groups#partial_search'
   get "permission_groups/:id" => 'permission_groups#show'

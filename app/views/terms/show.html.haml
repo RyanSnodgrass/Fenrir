@@ -31,12 +31,12 @@
 
   .row
     .large-12.columns
-      #name{:class => ('editable' if current_user && current_user.can( :edit_term ))}
+      #name{:class => ('editable' if current_user.can( :edit_term ))}
         %h2.page-title
           = @term.name
   .row
     .large-12.columns
-      #definition{:class => ('editable' if current_user && current_user.can( :edit_term ))}
+      #definition{:class => ('editable' if current_user.can( :edit_term ))}
         - if @term.definition.present? then
           = @term.definition
         - else

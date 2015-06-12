@@ -5,29 +5,43 @@ require "httparty"
 require "will_paginate/array"
 
 class TermsController < ApplicationController
+  before_action :set_term,         only: [:show, :update, :destroy]
+  before_action :authenticate,     only: [:create, :destroy, :update]
   def update
     render status: response.code, json: response.body
   end
 
+  # if current_user.can(:edit_term)
   def create
+    @term = Term.new(term_params)
+    # respond_to do |format|
+    #   if @term.save
 
-    render status: response.code, json: response.body
+    #     # puts "#{@term.name} has been created"
+    #     format.json { render status: :created, location: @term }
+    #     head :ok
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @term.errors, status: :unprocessable_entity }
+    #   end
+    # end
+    if @term.save
+      render status: response.code, json: response.body
+      head :ok
+    end
   end
 
   def destroy
     render status: response.code, json: response.body
   end
 
-
- 
   def show
-    @term = Term.find_by(name: params[:id])
       # GET OFFICES
       # GET PERMISSION GROUPS
       # GET TERM
       # GET STAKEHOLDERS FOR TERM
   end
-  
+
   def search_string(search_s)
     if !search_s.blank?
       json_string = '{"query":{"match": {"_all": {"query": "' + "#{search_s}" +'","operator": "and" }}},"size":"999","sort":[{"name":{"order":"asc"}}]}'
@@ -39,11 +53,6 @@ class TermsController < ApplicationController
       #json_string = '{"query":{"query_string": {"query": "*' + "#{search_s}" +'*","fields":["name","definition"],"highlight": {"fields": {"name": {"fragment_size" : 150,"number_of_fragments": 5}}},,"sort":[{"name.raw":{"order":"asc"}}],"from":"0","size":"999"}'
       muninn_response_render(json_string)
   end
-
-
-
-
-
 
   def index
     @terms = Term.all
@@ -93,13 +102,13 @@ class TermsController < ApplicationController
 
   private
   # Use callbacks to share common setup or constraints between actions.
-  def set_post
-    @post = Post.find(params[:id])
+  def set_term
+    @term = Term.find_by(name: params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def post_params
-    params.require(:post).permit(
+  def term_params
+    params.require(:term).permit(
       :name,
       :definition,
       :source_system,
