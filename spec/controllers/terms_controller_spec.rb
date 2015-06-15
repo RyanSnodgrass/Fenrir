@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# require 'json'
 RSpec.describe TermsController do
   let(:term) { create(:term) }
   let(:user) { create(:user) }
@@ -19,17 +19,19 @@ RSpec.describe TermsController do
       post :create, term: term
       expect(response.status).to eq(401)
     end
-    it 'routes to Post#create' do
+    it 'adds term to database' do
       establish_current_user(user)
       expect{
         post :create, term: attributes_for(:term)
       }.to change(Term, :count).by(1)
     end
-    xit 'redirects to the last term' do
+    it 'returns back the added term' do
       establish_current_user(user)
-      my_term = build(:term)
-      post :create, term: attributes_for(my_term)
-      expect(response.body).to eq(my_term.json)
+      @term = attributes_for(:term,
+        name: 'Academic Year'
+      )
+      post :create, term: @term
+      expect(assigns(:term).name).to eq('Academic Year')
     end
     it 'renders status 200' do
       establish_current_user(user)

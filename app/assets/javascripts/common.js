@@ -636,12 +636,10 @@ function createTerm( term_object ) {
      success: function (data) {
       addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
       showSuccessMessage();
-      console.log("Hey you found the successful")
       var url = escape('/terms/'+ term_object.name);
       window.location = url;
    },
      error: function( xhr, ajaxOptions, thrownError) {
-      console.log("Hey you found the unsuccessful")
      addValidationError( "alert", "Added Term, " +term_object.name+ ", has error: " + xhr.responseText);
      showValidationErrors()
    }

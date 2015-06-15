@@ -13,19 +13,9 @@ class TermsController < ApplicationController
 
   # if current_user.can(:edit_term)
   def create
-    @term = Term.new(term_params)
-    # respond_to do |format|
-    #   if @term.save
-
-    #     # puts "#{@term.name} has been created"
-    #     format.json { render status: :created, location: @term }
-    #     head :ok
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @term.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    @term = Term.new(term_params)  
     if @term.save
+
       render status: response.code, json: response.body
       head :ok
     end
