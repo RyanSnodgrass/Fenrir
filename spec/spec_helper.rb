@@ -34,7 +34,6 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   ENV["RAILS_ENV"] = 'rspec'
 
-
     # config.include(Capybara::Webkit::RspecMatchers, :type => :feature)
 
 

@@ -1,35 +1,38 @@
-require "net/http"
-require "json"
-require "open-uri"
-require "httparty"
-require "will_paginate/array"
+require 'net/http'
+require 'json'
+require 'open-uri'
+require 'httparty'
+require 'will_paginate/array'
 
 class TermsController < ApplicationController
-  before_action :set_term,         only: [:show, :update, :destroy]
-  before_action :authenticate,     only: [:create, :destroy, :update]
+  skip_before_action :verify_authenticity_token
+  before_action :set_term,     only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:create, :destroy, :update]
+
   def update
-    render status: response.code, json: response.body
+    if @term.update(term_params)
+      render status: response.code, json: response.body
+    end
   end
 
-  # if current_user.can(:edit_term)
   def create
     @term = Term.new(term_params)  
     if @term.save
-
       render status: response.code, json: response.body
       head :ok
     end
   end
 
   def destroy
-    render status: response.code, json: response.body
+    @term.destroy
+    head :ok
   end
 
   def show
-      # GET OFFICES
-      # GET PERMISSION GROUPS
-      # GET TERM
-      # GET STAKEHOLDERS FOR TERM
+    # GET OFFICES
+    # GET PERMISSION GROUPS
+    # GET TERM
+    # GET STAKEHOLDERS FOR TERM
   end
 
   def search_string(search_s)
@@ -96,7 +99,6 @@ class TermsController < ApplicationController
     @term = Term.find_by(name: params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def term_params
     params.require(:term).permit(
       :name,

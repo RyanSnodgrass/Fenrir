@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :term do
-    name                        Faker::Company.name
+    name                        Faker::Lorem.word
     definition                  Faker::Lorem.paragraph 
     source_system               ''
     possible_values             Faker::Lorem.sentence(1)

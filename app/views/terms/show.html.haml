@@ -1,7 +1,7 @@
 :javascript
-  term_object = #{@term["term"].to_json.to_s.html_safe}
-  office_json = #{@office_json.to_s.html_safe}
-  stakeholder_hash = #{@stakeholder_hash.to_json.to_s.html_safe}
+  term_object = #{@term.to_json.to_s.html_safe}
+/   office_json = #{@office_json.to_s.html_safe}
+/  stakeholder_hash = #{@stakeholder_hash.to_json.to_s.html_safe}
 .row
   .large-8.columns
     %ul#error_list{:style => "display:none"}

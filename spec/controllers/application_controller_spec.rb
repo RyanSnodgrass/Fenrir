@@ -64,13 +64,5 @@ RSpec.describe ApplicationController do
         expect(subject.current_user).to be_a_kind_of(NonExistentUser)
       end
     end
-    context 'switches appropriately' do
-      it 'when logging in to out ' do
-        establish_current_user(user)
-        expect(subject.current_user).to be_a_kind_of(User)
-        session.delete('cas')
-        expect(subject.current_user).to be_a_kind_of(AnonymousUser)
-      end
-    end
   end
 end

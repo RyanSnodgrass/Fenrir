@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   get "guide_search" => 'guide#search'
 
-  get "/login" => 'session#login'
+  get "/foo" => 'session#foo'
   get "/logout" => 'session#logout'
 
   get "terms/partial_search" => 'terms#partial_search'

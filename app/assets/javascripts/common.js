@@ -57,9 +57,10 @@ $(document).ready(function(){
 
   }
 
-  if(typeof term_object != 'undefined')  {
+  // if(typeof term_object != 'undefined')  {
 
     $('#updateTermButton').click(function() {
+      console.log('update button clicked')
       clearValidationErrors();
       if (updateTermObject(term_object) == false){
         return false;
@@ -78,7 +79,7 @@ $(document).ready(function(){
     $('#deleteCancel').click( function() {
       $('a.close-reveal-modal').trigger('click')
     });
-  }
+  // }
 
 
   if(typeof report_object != 'undefined')  {
@@ -593,7 +594,7 @@ function deleteTerm( termid ) {
         addSuccessMessage("success", "<b>" + data.message + ". Please wait for Glossary Page display.</br>" )
         showSuccessMessage();
         var myHashLink = "browse/terms";
-        window.location.href = '/' + myHashLink;
+        window.location.href = '/users/myprofile';
       },
       error: function(xhr, status, error) {
            //alert(xhr.responseText)
@@ -607,6 +608,7 @@ function deleteTerm( termid ) {
 
 function updateTerm( term_object ) {
   $.ajax({
+    // console.log('inside ajax')
       url: term_object.id,
       type: 'PUT',
       data: {"termJSON": JSON.stringify(term_object) },
@@ -634,12 +636,14 @@ function createTerm( term_object ) {
      data: { "term": term_object },
      // dataType: 'json',
      success: function (data) {
+      // console.log("Hey you found the successful")
       addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
       showSuccessMessage();
       var url = escape('/terms/'+ term_object.name);
       window.location = url;
    },
      error: function( xhr, ajaxOptions, thrownError) {
+     // console.log("Hey you found the unsuccessful")
      addValidationError( "alert", "Added Term, " +term_object.name+ ", has error: " + xhr.responseText);
      showValidationErrors()
    }
