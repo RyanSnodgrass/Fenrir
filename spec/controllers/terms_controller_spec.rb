@@ -75,4 +75,22 @@ RSpec.describe TermsController do
       expect(@term.definition).to_not eq('Lorem Ipsum')
     end
   end
+  describe 'DELETE destroy' do
+    it 'requires authentication' do
+      delete :destroy, term: term, id: term.name
+      expect(response.status).to eq(401)
+    end
+    it 'finds the specific term' do
+      delete :destroy, term: term, id: term.name
+      expect(assigns(:term)).to eq(term)
+    end
+    it 'deletes a term in the database' do
+      establish_current_user(user)
+      @term = create(:term)
+      expect{ 
+        delete :destroy, term: @term, id: @term.name
+      }.to change(Term,:count).by(-1)
+    end
+  end
+
 end
