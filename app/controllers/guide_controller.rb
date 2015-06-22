@@ -15,9 +15,9 @@ class GuideController < ApplicationController
   def report_roles
     @report_roles = []
     if current_user
-      @report_roles = Muninn::SecurityRoleAdapter.all(session[:cas_user], session[:cas_pgt]).select do |k|
-        k.report_role? && (current_user.has_role? k.name)
-      end
+     # @report_roles = Muninn::SecurityRoleAdapter.all(session[:cas_user], session[:cas_pgt]).select do |k|
+      #  k.report_role? && (current_user.has_role? k.name)
+      # end
     end
   end
 

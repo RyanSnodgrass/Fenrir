@@ -80,6 +80,7 @@ Huginn::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  config.rack_cas.fake = false
   # CAS proxy settings
   # config.cas_base_url = "https://login.nd.edu/cas/"
   # config.cas_proxy_callback_url = "https://data.nd.edu/cas_proxy_callback/receive_pgt"

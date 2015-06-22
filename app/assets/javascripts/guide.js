@@ -56,7 +56,7 @@ function bindTypeaheadSearchBehavior() {
 // then sends a get request to searchURL in huginn
 function executeFilter() {
   var searchURL = getSearchURL(1)
-  console.log(searchURL)
+  // console.log(searchURL)
   displayLoading()
 
   // this is where the actual load function happens

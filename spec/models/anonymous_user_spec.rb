@@ -1,18 +1,17 @@
 require 'rails_helper'
 
 describe 'AnonymousUser class' do
-  it 'returns a user object' do
-    create(:anonymous)
-    @anonymous_user = AnonymousUser.find
-    expect(@anonymous_user).to be_kind_of(User)
+  let(:anon) { AnonymousUser.new }
+  it 'is valid' do
+    expect(anon).to be_valid
   end
-
-  it "returns a user with 'anonymous' net_id" do
-    create(:anonymous)
-    @anonymous_user = AnonymousUser.find
-    expect(@anonymous_user.net_id).to eq('anonymous')
+  it "cannot do anything" do
+    expect(anon.can(:anything)).to eq(false)
   end
-  it "raises an error if it can't find an anonymous user" do
-    expect { AnonymousUser.find }.to raise_error(StandardError)
+  it "is not logged in" do
+    expect(anon.logged_in?).to eq(false)
+  end
+  it 'defaults ned_id to anonymous' do
+    expect(anon.net_id).to eq('anonymous')
   end
 end

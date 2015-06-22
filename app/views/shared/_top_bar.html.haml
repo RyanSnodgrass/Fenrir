@@ -19,7 +19,7 @@
           %ul.right
             / Divider
             - url = request.path.pluralize
-            - if current_user
+            - if current_user.logged_in?
               %li
                 = link_to 'Report Gallery', "/browse/report", :style => ("background: #666666;" if url == "/browse/reports")
               / %li
@@ -32,13 +32,13 @@
             %li
               = link_to 'Glossary', "/browse/term", :style => ("background: #666666;" if url == "/browse/terms")
             %li.has-dropdown
-              - if current_user
-                %a{:href => "#"}= current_user.name
+              - if current_user.logged_in?
+                %a{:href => "#"}= current_user.net_id
                 %ul.dropdown
                   %li
                     = link_to 'My Security Roles', "/users/myprofile"
 
-                  - if current_user && current_user.can( :publish_report )
+                  - if current_user.can( :publish_report )
                     %li.divider
                     %li
                       %a{"data-reveal-id" => "reporttiny", :href => "#"}
@@ -55,11 +55,11 @@
                             %input#createReportButton.expand.button{:type => "button", :value => "Save Report"}/
                             / .large-4.columns
                           %a.close-reveal-modal ×
-                  - if current_user && current_user.can(:edit_term)
+                  - if current_user.can(:edit_term)
                     / <li class="divider"></li>
                     %li.title.back.js-generated
                     %li
-                      %a{"data-reveal-id" => "mytiny", :href => "#"}
+                      %a#termtiny{"data-reveal-id" => "mytiny", :href => "#"}
                         %strong Add New Term
                       #mytiny.reveal-modal.tiny{"data-reveal" => ""}
                         %h2 Add a New Term
@@ -106,7 +106,7 @@
                           %a.close-reveal-modal ×
                   %li.divider
                   %li
-                    %a{:href => "#"}= link_to "Log Out", logout_path        
+                    %a{:href => "#"}= link_to "Log Out", logout_path
               - else
                 %li
-                  = link_to "Log In", login_path
+                  = link_to "Log In", foo_path

@@ -1,19 +1,13 @@
 class SessionController < ApplicationController
+  before_filter :authenticate, only: :foo
 
-    # before_filter CASClient::Frameworks::Rails::Filter, :only => :login
+  def logout
+    session.clear
+    current_user = nil
+    redirect_to root_path
+  end
 
-
-    # Upon login, takes you to report gallery
-    def login
-      redirect_to "/browse/reports"
-    end
-
-
-    # NEEDS TO BE IN SESSION CONTROLLER
-    def logout
-      session.clear
-      CASClient::Frameworks::Rails::Filter.logout(self)
-    end
-
-
+  def foo
+    redirect_to '/users/myprofile'
+  end
 end
