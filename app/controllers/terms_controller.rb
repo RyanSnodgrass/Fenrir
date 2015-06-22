@@ -12,6 +12,7 @@ class TermsController < ApplicationController
   def update
     if @term.update(term_params)
       render status: response.code, json: response.body
+      head :ok
     end
   end
 

@@ -611,18 +611,21 @@ function updateTerm( term_object ) {
     // console.log('inside ajax')
       url: term_object.id,
       type: 'PUT',
-      data: {"termJSON": JSON.stringify(term_object) },
+      data: { "term": term_object
+      },
      // data: { "termJSON": term_object },
-      dataType: 'json',
+      //dataType: 'json',
       success: function (data) {
          var url = escape(term_object.name);
          window.location.href = url;
          addSuccessMessage("success", "<b>" + term_object.name + "</b>" +  " updated successfully. " );
          showSuccessMessage();
+         console.log("success");
       },
       error: function( xhr, ajaxOptions, thrownError) {
          addValidationError( "alert", "Update term has errors: " + xhr.responseText);
-           showValidationErrors()
+         showValidationErrors(); 
+        console.log("not success");
       }
   })
 

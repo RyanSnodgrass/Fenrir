@@ -17,7 +17,6 @@ Huginn::Application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  config.rack_cas.fake = true
 
   # suggested action to solve capybara conflicts with rails 4.x
   config.allow_concurrency = false
@@ -43,6 +42,8 @@ Huginn::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  config.rack_cas.fake = true
 
   # CAS proxy settings
   # config.cas_base_url = "https://login.nd.edu/cas/"

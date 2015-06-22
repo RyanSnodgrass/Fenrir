@@ -38,7 +38,7 @@
     .large-12.columns
       #definition{:class => ('editable' if current_user.can( :edit_term ))}
         - if @term.definition.present? then
-          = @term.definition
+          = @term.definition.html_safe
         - else
           NA
   %dl
@@ -49,7 +49,7 @@
         %dd
           #data_availability{:class => ('editable' if current_user && current_user.can( :edit_term ))}
             - if @term.data_availability then
-              = @term.data_availability
+              = @term.data_availability.html_safe
             - else
               NA
     .row
@@ -58,7 +58,7 @@
         %dd
           #possible_values{:class => ('editable' if current_user && current_user.can( :edit_term ))}
             - if @term.possible_values.present? then
-              = @term.possible_values
+              = @term.possible_values.html_safe
             - else
               NA
     .row
@@ -67,7 +67,7 @@
         %dd
           #notes{:class => ('editable' if current_user && current_user.can( :edit_term ))}
             - if @term.notes.present? then
-              = @term.notes
+              = @term.notes.html_safe
             - else
               NA
   
@@ -154,7 +154,7 @@
         %dd
           #sensitivity_access_notes{:class => ('editable' if current_user.can( :edit_term ))}
             - if @term.sensitivity_access_notes.present?  then
-              = @term.sensitivity_access_notes
+              = @term.sensitivity_access_notes.html_safe
             
               
 
