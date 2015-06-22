@@ -57,10 +57,12 @@ $(document).ready(function(){
 
   }
 
-  if(typeof term_object != 'undefined')  {
+  // if(typeof term_object != 'undefined')  {
 
     $('#updateTermButton').click(function() {
+      console.log('update button clicked')
       clearValidationErrors();
+      var term_object = {}
       if (updateTermObject(term_object) == false){
         return false;
       }
@@ -73,12 +75,12 @@ $(document).ready(function(){
 
     $('#deleteConfirm').click( function() {
       $('a.close-reveal-modal').trigger('click')
-      deleteTerm(term_object.id)
+      deleteTerm(null)
     });
     $('#deleteCancel').click( function() {
       $('a.close-reveal-modal').trigger('click')
     });
-  }
+  // }
 
 
   if(typeof report_object != 'undefined')  {
@@ -299,7 +301,6 @@ function updateTermObject(term_object ) {
 
   clearValidationErrors()
   tinymce.triggerSave();
-  console.log(term_object);
   $('.editable').each( function() {
     id = $(this).attr('id');
     if ( id ) {
@@ -307,64 +308,59 @@ function updateTermObject(term_object ) {
       if (id == "name") {
         var StrippedString = p.replace(/(<([^>]+)>)/ig,"");
         p = StrippedString;
-
       }
-      console.log(p);
-      console.log(id);
       term_object[id] = p;
     }
-
   })
   term_object["sensitivity_classification"] = $('#sensitivity_classification').val();
   term_object["access_designation"] = $('#access_designation').val();
+  // term_object["permission_groups"] = []
+  // group_name = $('#permission-group').val();
+  // term_object["permission_groups"].push( {name: group_name})
 
-  term_object["permission_groups"] = []
-  group_name = $('#permission-group').val();
-  term_object["permission_groups"].push( {name: group_name})
+  // term_object["stakeholders"] = []
+  // var office_array=[]
 
-  term_object["stakeholders"] = []
-  var office_array=[]
+  // var i = 0;
+  // var exitRACI = false;
+  // var dupRACI = false;
+  // var office_text =null;
+  // $('.raci_row').each( function() {
+  //   stake = $(this).data('raci-stake')
+  //   console.log("stake value is " + stake);
+  //   json_array = $('#raci' + i ).select2('data')
+  //   if (stake == "Responsible" && json_array.length >1){
+  //     addValidationError( "alert", "Only one <b>Responsible</b> office is allowed.")
+  //   }
 
-  var i = 0;
-  var exitRACI = false;
-  var dupRACI = false;
-  var office_text =null;
-  $('.raci_row').each( function() {
-    stake = $(this).data('raci-stake')
-    console.log("stake value is " + stake);
-    json_array = $('#raci' + i ).select2('data')
-    if (stake == "Responsible" && json_array.length >1){
-      addValidationError( "alert", "Only one <b>Responsible</b> office is allowed.")
-    }
+  //   for (var j = 0; j < json_array.length; j++ ) {
+  //     term_object["stakeholders"].push( { name: json_array[j]["text"], stake: stake} )
+  //     var office_exist = false;
+  //     if (office_array !=null )  {
+  //        for (var k=0; k<office_array.length; k++){
+  //           if (json_array[j]["text"] == office_array[k]["name"])  {
+  //             office_exist = true;
+  //             break;
+  //           }
+  //        }
+  //      }
 
-    for (var j = 0; j < json_array.length; j++ ) {
-      term_object["stakeholders"].push( { name: json_array[j]["text"], stake: stake} )
-      var office_exist = false;
-      if (office_array !=null )  {
-         for (var k=0; k<office_array.length; k++){
-            if (json_array[j]["text"] == office_array[k]["name"])  {
-              office_exist = true;
-              break;
-            }
-         }
-       }
+  //     if (!office_exist)
+  //       office_array.push({name: json_array[j]["text"]})
+  //     else{
+  //       if (!office_text)
+  //         office_text = json_array[j]["text"]
+  //       else if (office_text.search( json_array[j]["text"]) <0)
+  //         office_text  += " , "+ json_array[j]["text"]
+  //       }
 
-      if (!office_exist)
-        office_array.push({name: json_array[j]["text"]})
-      else{
-        if (!office_text)
-          office_text = json_array[j]["text"]
-        else if (office_text.search( json_array[j]["text"]) <0)
-          office_text  += " , "+ json_array[j]["text"]
-        }
+  //     }
+  //     i++;
+  // });
 
-      }
-      i++;
-  });
-
-  if (office_text !=null)
-    addValidationError( "alert", "<b>" +  office_text + "</b>" +  " has repeated in the RACI entry. Each office is assigned for one role per term.");
-    console.log( term_object );
+  // if (office_text !=null)
+  //   addValidationError( "alert", "<b>" +  office_text + "</b>" +  " has repeated in the RACI entry. Each office is assigned for one role per term.");
+  //   console.log( term_object );
 
   if ( showValidationErrors()  == true ) {
     
@@ -577,7 +573,6 @@ function deleteReport( reportid ) {
         window.location.href = '/' + myHashLink;
       },
       error: function(xhr, status, error) {
-           //alert(xhr.responseText)
         addValidationError( "alert", "Report delete has errors: " + xhr.responseText);
         showValidationErrors()
       }
@@ -586,20 +581,19 @@ function deleteReport( reportid ) {
 
 
 function deleteTerm( termid ) {
-    $.ajax({
-      url:   termid,
-      type: 'DELETE',
-      success: function(data, status, xhr){
-        addSuccessMessage("success", "<b>" + data.message + ". Please wait for Glossary Page display.</br>" )
-        showSuccessMessage();
-        var myHashLink = "browse/terms";
-        window.location.href = '/' + myHashLink;
-      },
-      error: function(xhr, status, error) {
-           //alert(xhr.responseText)
-        addValidationError( "alert", "Delete term has errors: " + xhr.responseText);
-        showValidationErrors()
-      }
+  $.ajax({
+    url:   $('#mytinyDelete').attr('ajax_path'),
+    type: 'DELETE',
+    success: function(data, status, xhr){
+      addSuccessMessage("success", "<b>" + data.message + ". Please wait for Glossary Page display.</br>" )
+      showSuccessMessage();
+      var myHashLink = "browse/terms";
+      window.location.href = '/users/myprofile';
+    },
+    error: function(xhr, status, error) {
+      addValidationError( "alert", "Delete term has errors: " + xhr.responseText);
+      showValidationErrors()
+    }
   });
 }
 
@@ -607,38 +601,45 @@ function deleteTerm( termid ) {
 
 function updateTerm( term_object ) {
   $.ajax({
+    // console.log('inside ajax')
       url: term_object.id,
       type: 'PUT',
-      data: {"termJSON": JSON.stringify(term_object) },
+      data: { "term": term_object
+      },
      // data: { "termJSON": term_object },
-      dataType: 'json',
+      //dataType: 'json',
       success: function (data) {
          var url = escape(term_object.name);
          window.location.href = url;
          addSuccessMessage("success", "<b>" + term_object.name + "</b>" +  " updated successfully. " );
          showSuccessMessage();
+         console.log("success");
       },
       error: function( xhr, ajaxOptions, thrownError) {
          addValidationError( "alert", "Update term has errors: " + xhr.responseText);
-           showValidationErrors()
+         showValidationErrors(); 
+        console.log("not success");
       }
   })
 
 }
 
 function createTerm( term_object ) {
+  
   $.ajax({
      url : '/terms',
      type: 'POST',
-     data: { "term": JSON.stringify(term_object)},
-     dataType: 'json',
+     data: { "term": term_object },
+     // dataType: 'json',
      success: function (data) {
+      // console.log("Hey you found the successful")
       addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
       showSuccessMessage();
       var url = escape('/terms/'+ term_object.name);
       window.location = url;
    },
      error: function( xhr, ajaxOptions, thrownError) {
+     // console.log("Hey you found the unsuccessful")
      addValidationError( "alert", "Added Term, " +term_object.name+ ", has error: " + xhr.responseText);
      showValidationErrors()
    }

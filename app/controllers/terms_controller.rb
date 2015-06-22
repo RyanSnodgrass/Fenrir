@@ -1,87 +1,41 @@
-require "net/http"
-require "json"
-require "open-uri"
-require "httparty"
-require "will_paginate/array"
+require 'net/http'
+require 'json'
+require 'open-uri'
+require 'httparty'
+require 'will_paginate/array'
 
 class TermsController < ApplicationController
-
-  ### when all security actions are on, it asks to sign in for #show
-  ### when all are off, #update errors out
-
-  # before_filter CASClient::Frameworks::Rails::Filter
-  ### commenting out before_filter seems to fix everything
-  
-  unless @current_user
-    skip_before_action :verify_authenticity_token
-  end
-
+  skip_before_action :verify_authenticity_token
+  before_action :set_term,     only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:create, :destroy, :update]
 
   def update
-    response = Muninn::Adapter.put( "/terms/#{URI.encode(params[:id])}", session[:cas_user], session[:cas_pgt], params[:termJSON] )
-    render status: response.code, json: response.body
+    if @term.update(term_params)
+      render status: response.code, json: response.body
+      head :ok
+    end
   end
 
   def create
-
-    response = Muninn::Adapter.post( '/terms/', session[:cas_user], session[:cas_pgt], params[:term])
-    render status: response.code, json: response.body
+    @term = Term.new(term_params)  
+    if @term.save
+      render status: response.code, json: response.body
+      head :ok
+    end
   end
 
   def destroy
-    response = Muninn::Adapter.delete( "/terms/id/#{URI.encode(params[:id])}", session[:cas_user], session[:cas_pgt] )
-    render status: response.code, json: response.body
+    @term.destroy
+    head :ok
   end
 
-
- 
   def show
-
-      # GET OFFICES
-    office_resp = Muninn::Adapter.get( "/offices", session[:cas_user], session[:cas_pgt] )
-    office_json = JSON.parse( office_resp.body )["results"]
-    logger.debug("These are the show offices: #{office_json}")
-    offices = []
-    office_json.each do |office|
-      offices << {id: office["data"]["name"], text: office["data"]["name"]}
-    end
-    @office_json = offices.to_json
-
-    permission_group_resp = Muninn::Adapter.get( "/permission_groups", session[:cas_user], session[:cas_pgt] )
-    permission_group_json = JSON.parse( permission_group_resp.body )["results"]
-    logger.debug("These are the show groups: #{permission_group_json}")
-    groups = []
-    permission_group_json.each do |group|
-      groups << {id: group["data"]["id"], text: group["data"]["name"]}
-    end
-    @permission_groups = groups
-
-
-      # GET TERM
-    muninn_response = Muninn::Adapter.get( "/terms/" + URI::encode(params[:id]), session[:cas_user], session[:cas_pgt] )
-    @term = JSON.parse(muninn_response.body)
-    @term["reports"] ||= []
-    @term_group = {}
-    if @term["permission_groups"].present?
-      @term_group = @term["permission_groups"].first["name"]
-    end
-      # GET STAKEHOLDERS FOR TERM
-    @stakeholder_hash = {}
-    @stakeholder_hash["Responsible"] = []
-    @stakeholder_hash["Accountable"] = []
-    @stakeholder_hash["Consult"] = []
-    @stakeholder_hash["Inform"] = []
-
-
-    stake_json = @term["stakeholders"]
-    if stake_json != nil
-     stake_json.each do |stake|
-          @stakeholder_hash[stake["stake"]] ||= []
-        @stakeholder_hash[stake["stake"]] << {id: stake["id"], text: stake["name"]}
-      end
-    end
+    # GET OFFICES
+    # GET PERMISSION GROUPS
+    # GET TERM
+    # GET STAKEHOLDERS FOR TERM
   end
-  
+
   def search_string(search_s)
     if !search_s.blank?
       json_string = '{"query":{"match": {"_all": {"query": "' + "#{search_s}" +'","operator": "and" }}},"size":"999","sort":[{"name":{"order":"asc"}}]}'
@@ -94,14 +48,8 @@ class TermsController < ApplicationController
       muninn_response_render(json_string)
   end
 
-
-
-
-
-
   def index
-
-  logger.debug("Querying Muninn...")
+    @terms = Term.all
   
    page =params[:page]
    if params.has_key?(:tags)
@@ -146,5 +94,22 @@ class TermsController < ApplicationController
     end
   end
 
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_term
+    @term = Term.find_by(name: params[:id])
+  end
 
+  def term_params
+    params.require(:term).permit(
+      :name,
+      :definition,
+      :source_system,
+      :possible_values,
+      :notes,
+      :data_availability,
+      :sensitivity_classification,
+      :access_designation,
+      :sensitivity_access_notes)
+  end
 end
