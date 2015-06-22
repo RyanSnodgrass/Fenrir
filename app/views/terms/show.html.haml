@@ -1,5 +1,5 @@
-:javascript
-  term_object = #{@term.to_json.to_s.html_safe}
+/ :javascript
+/  term_object = #{@term.to_json.to_s.html_safe}
 /   office_json = #{@office_json.to_s.html_safe}
 /  stakeholder_hash = #{@stakeholder_hash.to_json.to_s.html_safe}
 .row
@@ -18,7 +18,7 @@
       %a.close{:href => "#"} ×
 .row
   .large-12.columns
-    #mytinyDelete.reveal-modal.tiny{"data-reveal" => ""}
+    #mytinyDelete.reveal-modal.tiny{"data-reveal" => "", ajax_path: "/terms/#{@term.name}"}
       %h2 Deleting Term
       %br
       %b Are you sure?

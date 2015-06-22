@@ -58,7 +58,7 @@ describe 'visiting Term page' do
       expect(page).to have_content('My New Term')
       page.driver.reset!
     end
-    it 'updates a term', js: true, focus: true do
+    it 'updates a term', js: true do
       login
       visit(term_path(term.name))
       # page.execute_script('$(tinymce.editors[2].setContent("my content here"))')
