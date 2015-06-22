@@ -36,7 +36,7 @@ describe 'User Logging In'do
     expect(page).to have_content(user.net_id)
   end
   it 'switches from logged in to logged out', js: true do
-    login
+    login(user)
     expect(page).to have_content('My User Name')
     find('li.has-dropdown').hover
     click_link('Log Out')

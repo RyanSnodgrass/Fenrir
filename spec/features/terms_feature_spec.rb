@@ -40,13 +40,13 @@ describe 'visiting Term page' do
 
   context 'when logged in' do
     it 'will show the update and delete buttons' do
-      login
+      login(user)
       visit(term_path(term.name))
       expect(page).to have_css('#updateTermButton')
       expect(page).to have_css('#deleteTermButton')
     end
     it 'adds a new term', js: true do
-      login
+      login(user)
       find('li.has-dropdown').hover
       click_link('termtiny')
       within('#mytiny') do
@@ -59,7 +59,7 @@ describe 'visiting Term page' do
       page.driver.reset!
     end
     it 'updates a term', js: true do
-      login
+      login(user)
       visit(term_path(term.name))
       # page.execute_script('$(tinymce.editors[2].setContent("my content here"))')
       select "Limited", from: 'access_designation'
@@ -74,7 +74,7 @@ describe 'visiting Term page' do
       # page.execute_script('$("#name.editable").tinymce().setContent("Pants are pretty sweet.")')
     end
     it 'deletes a term', js: true do
-      login
+      login(user)
       visit("/terms/#{term.name}")
       click_button('Delete Term')
       click_button('Yes')
