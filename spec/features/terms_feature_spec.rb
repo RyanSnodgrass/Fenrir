@@ -56,7 +56,7 @@ describe 'visiting Term page' do
       end
       expect(page).to have_content('General Information')
       expect(page).to have_content('My New Term')
-      page.driver.reset!
+      # page.driver.reset!
     end
     it 'updates a term', js: true do
       login(user)
@@ -67,20 +67,17 @@ describe 'visiting Term page' do
       visit(term_path(term.name))
       save_screenshot('../test/tmp/cache/assets/test/tinymce.png')
       expect(page).to have_select('access_designation', selected: 'Limited')
-      page.driver.reset!
-      # save_screenshot('../test/tmp/cache/assets/test/tinymce.png')
-
-      # expect(page).to have_content('my content here')
-      # page.execute_script('$("#name.editable").tinymce().setContent("Pants are pretty sweet.")')
+      # page.driver.reset!
     end
     it 'deletes a term', js: true do
       login(user)
       visit("/terms/#{term.name}")
       click_button('Delete Term')
       click_button('Yes')
-      expect(page).to_not have_content("#{term.name}")
+      expect(page).to_not have_content('General Information')
+      expect(page).to_not have_content('Possible Values')
       expect(page).to have_content('My User Name')
-      page.driver.reset!
+      # page.driver.reset!
     end
   end
 end

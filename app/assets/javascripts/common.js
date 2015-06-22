@@ -301,7 +301,6 @@ function updateTermObject(term_object ) {
 
   clearValidationErrors()
   tinymce.triggerSave();
-  console.log('term object before we put anything' + term_object);
   $('.editable').each( function() {
     id = $(this).attr('id');
     if ( id ) {
@@ -309,17 +308,12 @@ function updateTermObject(term_object ) {
       if (id == "name") {
         var StrippedString = p.replace(/(<([^>]+)>)/ig,"");
         p = StrippedString;
-
       }
-      console.log(p);
-      console.log(id);
       term_object[id] = p;
     }
-
   })
   term_object["sensitivity_classification"] = $('#sensitivity_classification').val();
   term_object["access_designation"] = $('#access_designation').val();
-  console.log('Term object AFTER we add all the stuff' + term_object);
   // term_object["permission_groups"] = []
   // group_name = $('#permission-group').val();
   // term_object["permission_groups"].push( {name: group_name})

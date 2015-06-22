@@ -9,6 +9,7 @@ end
 
 describe 'User Logging In'do
   let(:user) { create(:user) }
+  after { page.driver.reset! }
   it "will first visit my app's root page" do
     visit('/')
     expect(page).to have_content('Welcome To The BI Portal')
@@ -36,7 +37,11 @@ describe 'User Logging In'do
     expect(page).to have_content(user.net_id)
   end
   it 'switches from logged in to logged out', js: true do
-    login(user)
+    visit('/')
+    click_link('Log In')
+    fill_in 'username', with: user.net_id
+    fill_in 'password', with: 'any password'
+    click_button 'Login'
     expect(page).to have_content('My User Name')
     find('li.has-dropdown').hover
     click_link('Log Out')
