@@ -151,25 +151,25 @@ $(document).ready(function(){
 
   }
 
-    if(typeof permission_group_detail_json != 'undefined')  {
+    // if(typeof permission_group_detail_json != 'undefined')  {
 
       $('#update-permission-group').click(function() {
-        // permission_group_object
-        if (updatePermissionGroupObject(permission_group_detail_json) == false) {
+        permission_group_object = {}
+        if (updatePermissionGroupObject(permission_group_object) == false) {
           return false;
         }
         else {
-          updatePermissionGroup(permission_group_detail_json)
+          updatePermissionGroup(permission_group_object)
         }
       });
-      $('#deleteConfirm').click( function() {
+      $('#deleteConfirmpg').click( function() {
         $('a.close-reveal-modal').trigger('click')
-        deletePermissionGroup(permission_group_detail_json.id)
+        deletePermissionGroup(permission_group_object.id)
       });
       $('#deleteCancel').click( function() {
         $('a.close-reveal-modal').trigger('click')
       });
-  }
+  // }
 
 
 
@@ -602,6 +602,7 @@ function deleteTerm( termid ) {
 function updateTerm( term_object ) {
   $.ajax({
     // console.log('inside ajax')
+
       url: term_object.id,
       type: 'PUT',
       data: { "term": term_object
@@ -613,12 +614,12 @@ function updateTerm( term_object ) {
          window.location.href = url;
          addSuccessMessage("success", "<b>" + term_object.name + "</b>" +  " updated successfully. " );
          showSuccessMessage();
-         console.log("success");
+         console.log("success update term");
       },
       error: function( xhr, ajaxOptions, thrownError) {
          addValidationError( "alert", "Update term has errors: " + xhr.responseText);
          showValidationErrors(); 
-        console.log("not success");
+        console.log("not success update term");
       }
   })
 
@@ -632,14 +633,14 @@ function createTerm( term_object ) {
      data: { "term": term_object },
      // dataType: 'json',
      success: function (data) {
-      // console.log("Hey you found the successful")
+      console.log("success create term")
       addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
       showSuccessMessage();
       var url = escape('/terms/'+ term_object.name);
       window.location = url;
    },
      error: function( xhr, ajaxOptions, thrownError) {
-     // console.log("Hey you found the unsuccessful")
+     console.log("not success create term")
      addValidationError( "alert", "Added Term, " +term_object.name+ ", has error: " + xhr.responseText);
      showValidationErrors()
    }
@@ -693,16 +694,15 @@ function addPermissionGroup( permission_group_object ) {
   $.ajax({
      url : '/permission_groups',
      type: 'POST',
-     data: { "permission_group": JSON.stringify(permission_group_object)},
-     dataType: 'json',
+     data: { "permission_group": permission_group_object },
      success: function (data) {
       var url = escape('/permission_groups/'+ permission_group_object.name);
       window.location = url;
-      addSuccessMessage("success", "<b>Office " + permission_group_object.name +   " successfully. Please wait for Permission Group Detail page display.</b>");
+      addSuccessMessage("success", "<b>Permission Group " + permission_group_object.name +   " successfully. Please wait for Permission Group Detail page display.</b>");
       showSuccessMessage();
      },
      error: function( xhr, ajaxOptions, thrownError) {
-      addValidationError( "alert", "Added office, "+ permission_group_object.name+ ", has error: " + jQuery.parseJSON(xhr.responseText).message);
+      addValidationError( "alert", "Added Permission Group, "+ permission_group_object.name+ ", has error: " + jQuery.parseJSON(xhr.responseText).message);
       showValidationErrors()
     }
   })
@@ -711,7 +711,6 @@ function addPermissionGroup( permission_group_object ) {
 function updatePermissionGroupObject( permission_group_object ) {
   clearValidationErrors()
   tinymce.triggerSave();
-  console.log(permission_group_object);
   $('.editable').each( function() {
     id = $(this).attr('id');
     if ( id ) {
@@ -720,8 +719,6 @@ function updatePermissionGroupObject( permission_group_object ) {
         var StrippedString = p.replace(/(<([^>]+)>)/ig,"")
         p = StrippedString;
       }
-      console.log(p);
-      console.log(id);
       permission_group_object[id] = p;
     }
   });
@@ -732,8 +729,8 @@ function updatePermissionGroup( permission_group_object ) {
   $.ajax({
       url: permission_group_object.id,
       type: 'PUT',
-      data: {"permissiongroupJSON": JSON.stringify(permission_group_object)},
-      dataType: 'json',
+      data: { "permission_group" : permission_group_object},
+      // dataType: 'json',
       success: function (data) {
         var url = escape(permission_group_object.name);
         window.location = url;
@@ -741,7 +738,7 @@ function updatePermissionGroup( permission_group_object ) {
         showSuccessMessage();
       },
       error: function( xhr, ajaxOptions, thrownError) {
-         addValidationError( "alert", "Update Office, <b>" + permission_group_object.name + "</b>  has errors: " + jQuery.parseJSON(xhr.responseText).message);
+         addValidationError( "alert", "Update Office, <b>" + permission_group_object.name + "</b>  has errors: " + xhr.responseText);
          showValidationErrors();
       }
   });

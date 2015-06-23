@@ -7,7 +7,7 @@ Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app)
 end
 
-describe 'visiting Term page' do
+describe 'Term Feature' do
   let(:user) { create(:user) }
   let(:term) { create(:term) }
   after { page.driver.reset! }
@@ -39,7 +39,7 @@ describe 'visiting Term page' do
   end
 
   context 'when logged in' do
-    it 'will show the update and delete buttons' do
+    it 'visiting page will show the update and delete buttons' do
       login(user)
       visit(term_path(term.name))
       expect(page).to have_css('#updateTermButton')
@@ -65,8 +65,16 @@ describe 'visiting Term page' do
       select "Limited", from: 'access_designation'
       click_button('Update Term')
       visit(term_path(term.name))
-      save_screenshot('../test/tmp/cache/assets/test/tinymce.png')
       expect(page).to have_select('access_designation', selected: 'Limited')
+      # page.driver.reset!
+    end
+    it 'updates the term name', js: true do
+      login(user)
+      visit(term_path(term.name))
+      page.execute_script("tinyMCE.get('name').setContent('My Different Title')")
+      click_button('Update Term')
+      visit(term_path('My Different Title'))
+      expect(page).to have_content('My Different Title')
       # page.driver.reset!
     end
     it 'deletes a term', js: true do
