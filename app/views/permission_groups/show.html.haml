@@ -14,7 +14,7 @@
       %a.close{:href => "#"} ×
 .row
   .large-12.columns
-    #mytinyDelete.reveal-modal.tiny{"data-reveal" => ""}
+    #mytinyDelete.reveal-modal.tiny{"data-reveal" => "", ajax_path: "/permission_groups/#{@permission_group.name}"}
       %h2 Deleting Permission Group
       %br
       %b

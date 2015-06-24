@@ -59,5 +59,13 @@ describe 'visiting Permission Group page' do
       expect(page).to have_content('My Different Title')
       # page.driver.reset!
     end
+    it 'deletes a permission group', js: true do
+      login(user)
+      visit(permission_group_path(pg.name))
+      click_button('Delete Permission Group')
+      click_button('Yes')
+      expect(page).to_not have_content(pg.name)
+      expect(page).to have_content('My User Name')
+    end
   end
 end

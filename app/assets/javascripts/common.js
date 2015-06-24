@@ -164,7 +164,8 @@ $(document).ready(function(){
       });
       $('#deleteConfirmpg').click( function() {
         $('a.close-reveal-modal').trigger('click')
-        deletePermissionGroup(permission_group_object.id)
+        var pg_path = $('#mytinyDelete').attr('ajax_path')
+        deletePermissionGroup(pg_path)
       });
       $('#deleteCancel').click( function() {
         $('a.close-reveal-modal').trigger('click')
@@ -809,15 +810,15 @@ function deleteOffice( officeid ) {
   });
 }
 
-function deletePermissionGroup( permissiongroupid ) {
+function deletePermissionGroup( pg_path ) {
     $.ajax({
-      url:   permissiongroupid,
+      url:   pg_path,
       type: 'DELETE',
       success: function(data, status, xhr){
         addSuccessMessage("success", "<b>" + data.message + ". Please wait for Permission Groups display Page.</br>" )
         showSuccessMessage();
         var myHashLink = "browse/permission_groups";
-        window.location.href = '/' + myHashLink;
+        window.location.href = '/users/myprofile';
       },
       error: function(xhr, status, error) {
            //alert(xhr.responseText)
