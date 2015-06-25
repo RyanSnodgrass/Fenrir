@@ -54,38 +54,44 @@ describe 'Term Feature' do
         fill_in('tname', with: 'My New Term')
         click_button('Save Term')
       end
+      wait_for_ajax
       expect(page).to have_content('General Information')
       expect(page).to have_content('My New Term')
-      # page.driver.reset!
+      page.driver.reset!
     end
     it 'updates a term', js: true do
       login(user)
       visit(term_path(term.name))
-      # page.execute_script('$(tinymce.editors[2].setContent("my content here"))')
       select "Limited", from: 'access_designation'
       click_button('Update Term')
+      wait_for_ajax
       visit(term_path(term.name))
+      wait_for_ajax
       expect(page).to have_select('access_designation', selected: 'Limited')
-      # page.driver.reset!
+      page.driver.reset!
     end
     it 'updates the term name', js: true do
       login(user)
       visit(term_path(term.name))
       page.execute_script("tinyMCE.get('name').setContent('My Different Title')")
       click_button('Update Term')
+      wait_for_ajax
       visit(term_path('My Different Title'))
+      wait_for_ajax
       expect(page).to have_content('My Different Title')
-      # page.driver.reset!
+      page.driver.reset!
     end
     it 'deletes a term', js: true do
       login(user)
       visit("/terms/#{term.name}")
+      wait_for_ajax
       click_button('Delete Term')
       click_button('Yes')
+      wait_for_ajax
       expect(page).to_not have_content('General Information')
       expect(page).to_not have_content('Possible Values')
       expect(page).to have_content('My User Name')
-      # page.driver.reset!
+      page.driver.reset!
     end
   end
 end

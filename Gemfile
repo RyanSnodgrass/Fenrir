@@ -76,6 +76,10 @@ group :development, :rspec do
   gem 'faker'
 end
 
+group :development do
+  gem 'brakeman', :require => false
+end
+
 # Use unicorn as the app server
 gem 'unicorn'
 gem 'dotenv'
