@@ -65,6 +65,7 @@ gem 'httparty'
 
 gem "select2-rails"
 
+gem 'simplecov', :require => false, :group => :rspec
 group :development, :rspec do
   gem 'database_cleaner'
   gem 'nyan-cat-formatter'
@@ -74,9 +75,6 @@ group :development, :rspec do
   gem 'poltergeist'
   gem 'faker'
 end
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use unicorn as the app server
 gem 'unicorn'

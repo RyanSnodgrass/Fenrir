@@ -6,7 +6,7 @@ require "will_paginate/array"
 
 class PermissionGroupsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_permission_group,     only: [:show, :update, :destroy]
+  before_action :set_permission_group, only: [:show, :update, :destroy]
   before_action :authenticate, only: [:create, :destroy, :update]
 
   # def index

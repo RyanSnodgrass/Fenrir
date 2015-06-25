@@ -120,18 +120,18 @@
     
 
     /PERMISSION GROUPS
-    / .row
-    /   .large-12.large-centered.columns
-    /     %h5.page-title Sensitivity Classification
-    / %dl
-    /   .row
-    /     .large-6.columns
-    /       %dt Permission Group
-    /       %dd
-    /         - if current_user && current_user.can(:edit_term)
-    /           = select_tag 'permission-group', options_for_select(@permission_groups.collect{ |o| o[:text]}, @term_group ), {:prompt => "Please Choose Permission Group"}
-    /         - else
-    /           = @term_group
+    .row
+      .large-12.large-centered.columns
+        %h5.page-title Sensitivity Classification
+    %dl
+      .row
+        .large-6.columns
+          %dt Permission Group
+          %dd
+            - if current_user.can(:edit_term)
+              = select_tag 'permission-group', options_for_select(@permission_groups.collect{ |pg| pg.name}, @term.permission_group.try(:name)), {:prompt => "Please Choose Permission Group"}
+            - else
+              = @term.permission_group.try(:name)
     .row
       .large-6.columns                
         %dt Sensitivity Classification

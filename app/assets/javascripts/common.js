@@ -180,7 +180,6 @@ $(document).ready(function(){
      "name": term,
      "definition": "",
      "source_system": "",
-     "data_sensitivity": "",
      "possible_values": "",
      "data_availability": "",
      "notes": ""};
@@ -315,9 +314,9 @@ function updateTermObject(term_object ) {
   })
   term_object["sensitivity_classification"] = $('#sensitivity_classification').val();
   term_object["access_designation"] = $('#access_designation').val();
-  // term_object["permission_groups"] = []
-  // group_name = $('#permission-group').val();
-  // term_object["permission_groups"].push( {name: group_name})
+  term_object["perm_group"] = $('#permission-group').val();
+  // group_name = 
+  // term_object["permission_group"].push( {name: group_name} )
 
   // term_object["stakeholders"] = []
   // var office_array=[]

@@ -12,6 +12,11 @@ RSpec.describe TermsController do
       get :show, id: term.name
       expect(assigns(:term)).to eq(term)
     end
+    it 'assigns all permission groups' do
+      get :show, id: term.name
+      pg = create(:permission_group)
+      expect(assigns(:permission_groups)).to eq([pg])
+    end
   end
   describe 'POST create' do
     it 'requires authentication' do
@@ -66,6 +71,19 @@ RSpec.describe TermsController do
       expect(@term.definition).to eq('Lorem Ipsum')
       expect(assigns(:term).name).to eq('Academic Year')
     end
+    it 'updates a term with a permission group association' do
+      establish_current_user(user)
+      @term = create(:term)
+      @pg = create(:permission_group)
+      expect(@term.permission_group).to eq(nil)
+      my_changed_term = attributes_for(
+        :term, name: 'Academic Year')
+      put :update, id: @term.name, term: {
+        name: 'Academic Year', perm_group: @pg.name 
+      }
+      @term.reload
+      expect(@term.permission_group).to eq(@pg)
+    end
     it "won't update the term without authentication" do
       @term = create(:term)
       put :update, id: @term.name, term: attributes_for(
@@ -87,10 +105,9 @@ RSpec.describe TermsController do
     it 'deletes a term in the database' do
       establish_current_user(user)
       @term = create(:term)
-      expect{ 
+      expect{
         delete :destroy, term: @term, id: @term.name
       }.to change(Term,:count).by(-1)
     end
   end
-
 end
