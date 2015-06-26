@@ -43,4 +43,12 @@ RSpec.describe "Term routing", :type => :routing do
       )
     end
   end
+  describe 'search' do
+    it 'routes to terms controller search action' do
+      expect(:get => "/terms/search").to route_to(
+      :controller => "terms",
+      :action => "search"
+      )
+    end
+  end
 end

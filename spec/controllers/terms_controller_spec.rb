@@ -18,6 +18,7 @@ RSpec.describe TermsController do
       expect(assigns(:permission_groups)).to eq([pg])
     end
   end
+
   describe 'POST create' do
     it 'requires authentication' do
       post :create, term: term
@@ -48,6 +49,7 @@ RSpec.describe TermsController do
       expect(response.code).to eq('200')
     end
   end
+
   describe 'PUT update' do
     it 'requires authentication' do
       put :update, term: term, id: term.name
@@ -93,6 +95,7 @@ RSpec.describe TermsController do
       expect(@term.definition).to_not eq('Lorem Ipsum')
     end
   end
+
   describe 'DELETE destroy' do
     it 'requires authentication' do
       delete :destroy, term: term, id: term.name
@@ -108,6 +111,23 @@ RSpec.describe TermsController do
       expect{
         delete :destroy, term: @term, id: @term.name
       }.to change(Term,:count).by(-1)
+    end
+  end
+
+  describe 'POST search' do
+    it 'returns with a partial template' do
+      @term = create(:term)
+      get :search, { search_query: @term.name }
+      expect(response).to render_template(:partial => '_partial_search')
+    end
+    it 'returns a search result class in the search results' do
+      @term = create(:term)
+      # @term.reindex
+      # Term.reindex
+      Term.searchkick_index.refresh
+      get :search, { search_query: @term.name }
+      expect(assigns(:results)).to be_a_kind_of(Searchkick::Results)
+      expect(assigns(:results).first.name).to eq(@term.name)
     end
   end
 end

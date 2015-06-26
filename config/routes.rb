@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "/logout" => 'session#logout'
 
   get "terms/partial_search" => 'terms#partial_search'
+  get 'terms/search' => 'terms#search'
   resources :terms
 
   get "permission_groups/partial_search" => 'permission_groups#partial_search'

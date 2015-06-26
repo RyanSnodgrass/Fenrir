@@ -1,4 +1,10 @@
 require 'rails_helper'
+# RSpec.configure do |config|
+#   config.before :each do
+#     Term.reindex
+#     Term.searchkick_index.refresh
+#   end
+# end
 
 describe 'Term Class' do
   let(:term) { create(:term) }
@@ -18,5 +24,12 @@ describe 'Term Class' do
     pg.destroy
     @reloaded_term = Term.find_by(name: term.name)
     expect(@reloaded_term.permission_group).to eq(nil)
+  end
+  it 'uses search to find terms' do
+    @term = create(:term)
+    @term.reindex
+    Term.searchkick_index.refresh
+    results = Term.search @term.name
+    expect(results.first.name).to eq(@term.name)
   end
 end

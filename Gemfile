@@ -18,7 +18,7 @@ gem 'neo4j', '~> 4.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
-
+gem 'searchkick'
 # Use Foundation 5
 gem 'foundation-rails' , '~> 5.3.0.0'
 

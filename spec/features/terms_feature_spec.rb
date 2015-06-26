@@ -3,9 +3,9 @@ require 'capybara/rails'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 # options = { js_errors: false }
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app)
-end
+# Capybara.register_driver :poltergeist do |app|
+#   Capybara::Poltergeist::Driver.new(app)
+# end
 
 describe 'Term Feature' do
   let(:user) { create(:user) }

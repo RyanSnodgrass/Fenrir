@@ -37,9 +37,16 @@ class TermsController < ApplicationController
   def show
     @permission_groups = PermissionGroup.all
     # GET OFFICES
-    # GET PERMISSION GROUPS
-    # GET TERM
     # GET STAKEHOLDERS FOR TERM
+  end
+
+  def search
+    # puts params[:search_query]
+    @results = Term.search params[:search_query], fields: [:name]
+    respond_to do |format|
+      format.json {render :json => @results, layout: false}
+      format.html {render partial: "partial_search", layout: false }
+    end
   end
 
   # def search_string(search_s)

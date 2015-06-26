@@ -1,6 +1,7 @@
 # Documentation goes here
 class Term
   include Neo4j::ActiveNode
+  searchkick
   property              :name, constraint: :unique
   property              :created_at
   property              :updated_at
