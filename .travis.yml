@@ -9,4 +9,8 @@ before_install:
   - sed -i.bak s/dbms.security.auth_enabled=true/dbms.security.auth_enabled=false/g neo4j-community-2.2.0/conf/neo4j-server.properties
   - sed -i.bak s/org.neo4j.server.webserver.port=7474/org.neo4j.server.webserver.port=7475/g neo4j-community-2.2.0/conf/neo4j-server.properties
   - neo4j-community-2.2.0/bin/neo4j start
+services:
+  - elasticsearch
+before_script:
+  - sleep 10
 script: bundle exec rspec spec
