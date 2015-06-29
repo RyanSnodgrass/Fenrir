@@ -114,7 +114,7 @@ RSpec.describe TermsController do
     end
   end
 
-  describe 'POST search' do
+  describe 'GET search' do
     it 'returns with a partial template' do
       @term = create(:term)
       get :search, { search_query: @term.name }

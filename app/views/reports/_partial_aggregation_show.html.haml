@@ -1,0 +1,14 @@
+- if @report_embed.present?
+  .row
+    .large-12.columns
+      %ul{:class => "small-block-grid-1 medium-block-grid-2 large-block-grid-#{@report_embed["gridsize"].to_s}"}
+        - @subreports.each do |subreport|
+          %li
+            .row
+              .small-12.medium-12.large-12.columns
+                %a{:href => subreport["name"]}
+                  %h5= subreport["name"]
+            .row
+              .small-12.medium-12.large-12.columns
+                %a{:href => subreport["name"]}
+                  %img{:src => subreport["thumbnail_uri"]}

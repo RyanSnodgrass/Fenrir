@@ -9,6 +9,10 @@ class Report
   property              :gridsize
   property              :timestamp
   property              :embedJSON
+  property              :created_at
+  property              :updated_at
+  property              :created_by
+  property              :updated_by
   validates_presence_of :name
   has_many :in,         :terms
 end

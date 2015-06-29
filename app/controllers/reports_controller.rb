@@ -47,7 +47,6 @@ class ReportsController < ApplicationController
   end
 
   def show
-
     @terms = Term.all
     # logger.debug("Querying Muninn...")
     # reports_resp = Muninn::Adapter.get( 
