@@ -7,7 +7,7 @@ Capybara.javascript_driver = :poltergeist
 #   Capybara::Poltergeist::Driver.new(app)
 # end
 
-describe 'User Logging In'do
+describe 'User Logging In' do
   let(:user) { create(:user) }
   after { page.driver.reset! }
   it "will first visit my app's root page" do

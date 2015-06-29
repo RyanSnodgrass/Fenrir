@@ -7,6 +7,7 @@ require 'rails_helper'
 # end
 
 describe 'Term Class' do
+
   let(:term) { create(:term) }
   it 'is valid' do
     expect(term).to be_valid

@@ -43,10 +43,8 @@ class TermsController < ApplicationController
   def search
     # puts params[:search_query]
     @results = Term.search params[:search_query], fields: [:name]
-    respond_to do |format|
-      format.json {render :json => @results, layout: false}
-      format.html {render partial: "partial_search", layout: false }
-    end
+    logger.debug(@results.first)
+    render partial: "/guide/partial_search", locals: { results: @results || [] }, layout: false
   end
 
   # def search_string(search_s)
