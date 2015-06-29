@@ -18,6 +18,7 @@
 //= require jquery.joyride
 //= require jquery.cookie
 //= require select2
+//= require jquery-readyselector
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

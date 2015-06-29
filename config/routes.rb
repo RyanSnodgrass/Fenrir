@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   get "/logout" => 'session#logout'
 
   get "terms/partial_search" => 'terms#partial_search'
+  get 'terms/search' => 'terms#search'
   resources :terms
+
+  get "permission_groups/partial_search" => 'permission_groups#partial_search'
+  resources :permission_groups
 
   get "cas_test" => 'cas_tests#index'
 
@@ -28,14 +32,8 @@ Rails.application.routes.draw do
   delete "offices/:id" => 'offices#destroy'  #SMM
   post "offices" => 'offices#create' #SMM
 
-  get "permission_groups" => 'permissiongroupss#index'
-
-  get "permission_groups/partial_search" => 'permission_groups#partial_search'
-  get "permission_groups/:id" => 'permission_groups#show'
-  put "permission_groups/:id" => 'permission_groups#update'  #SMM
-  delete "permission_groups/:id" => 'permission_groups#destroy'  #SMM
-  post "permission_groups" => 'permission_groups#create' #SMM
-
+  
+  
   get "datasets/partial_search" => 'datasets#partial_search'
   get "datasets/:id" => 'datasets#show'
   put "datasets/:id" => 'datasets#update'  #SMM

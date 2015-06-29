@@ -1,6 +1,7 @@
 # Documentation goes here
 class Term
   include Neo4j::ActiveNode
+  searchkick
   property              :name, constraint: :unique
   property              :created_at
   property              :updated_at
@@ -15,4 +16,5 @@ class Term
   property              :access_designation
   property              :sensitivity_access_notes
   validates_presence_of :name
+  has_one :out,         :permission_group
 end

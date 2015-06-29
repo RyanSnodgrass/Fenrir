@@ -3,11 +3,11 @@ require 'capybara/rails'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 # options = { js_errors: false }
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app)
-end
+# Capybara.register_driver :poltergeist do |app|
+#   Capybara::Poltergeist::Driver.new(app)
+# end
 
-describe 'User Logging In'do
+describe 'User Logging In' do
   let(:user) { create(:user) }
   after { page.driver.reset! }
   it "will first visit my app's root page" do

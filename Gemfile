@@ -18,7 +18,7 @@ gem 'neo4j', '~> 4.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
-
+gem 'searchkick'
 # Use Foundation 5
 gem 'foundation-rails' , '~> 5.3.0.0'
 
@@ -65,6 +65,7 @@ gem 'httparty'
 
 gem "select2-rails"
 
+gem 'simplecov', :require => false, :group => :rspec
 group :development, :rspec do
   gem 'database_cleaner'
   gem 'nyan-cat-formatter'
@@ -75,8 +76,9 @@ group :development, :rspec do
   gem 'faker'
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
+group :development do
+  gem 'brakeman', :require => false
+end
 
 # Use unicorn as the app server
 gem 'unicorn'

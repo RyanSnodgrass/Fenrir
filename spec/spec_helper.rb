@@ -13,7 +13,8 @@
 # The `.rspec` file also contains a few flags that are not defaults but that
 # users commonly want.
 
-
+require 'simplecov'
+SimpleCov.start
 require 'factory_girl_rails'
 require 'capybara/rspec'
 
@@ -28,9 +29,21 @@ module LoginHelper
     click_button 'Login'
   end
 end
+module WaitForAjax
+  def wait_for_ajax
+    Timeout.timeout(Capybara.default_wait_time) do
+      loop until finished_all_ajax_requests?
+    end
+  end
+
+  def finished_all_ajax_requests?
+    page.evaluate_script('jQuery.active').zero?
+  end
+end
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.include LoginHelper
+  config.include WaitForAjax
   config.include FactoryGirl::Syntax::Methods
   ENV["RAILS_ENV"] = 'rspec'
 
