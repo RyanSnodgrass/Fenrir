@@ -1,3 +1,4 @@
+/*
 $(document).ready(
   function() {
     executeFilter();
@@ -166,3 +167,4 @@ function highlightSearchString() {
 function displayLoading() {
   $('#search_results_right').html("<div class='search_results_msg'><img src='/assets/ajax-loader.gif'></div>")
 }
+*/

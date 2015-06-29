@@ -90,10 +90,10 @@
                           / .large-4.columns
                           %a.close-reveal-modal ×
                     %li
-                      %a{"data-reveal-id" => "permissiongrouptiny", :href => "#"}
+                      %a#addpglink{"data-reveal-id" => "permissiongrouptiny", :href => "#"}
                         %strong Add New Permission Group
                       #permissiongrouptiny.reveal-modal.tiny{"data-reveal" => ""}
-                        %h2 Add New Permission Group
+                        %h2 Register New Permission Group
                         Name:
                         %input#pgname{:name => "pgname", :type => "text"}
                         %br

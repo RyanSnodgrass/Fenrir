@@ -17,6 +17,7 @@
 /_yardoc/
 /doc/
 /rdoc/
+coverage
 
 ## Environment normalisation:
 /.bundle/

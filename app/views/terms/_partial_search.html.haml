@@ -3,11 +3,14 @@
     .result_header
       .result_title
         %h4
-          %a.do_highlight{:href => "../#{result["&type"].pluralize}/#{result["name"]}"}
-            = result["name"]
-    / .shape
-    /   %p= result["type"]
-    .do_highlight.result_body
-      - if result["definition"]  then
-        = result["definition"].html_safe
+          %a.do_highlight{:href => "../#{result.class.to_s.downcase.pluralize}/#{result.name}"}
+            = result.name
+        / = result.class
+
+        / .shape
+        /   %p= result["type"]
+        .do_highlight.result_body
+          = result.definition.html_safe
+        / - if result["definition"]  then
+        / = result["definition"].html_safe
 %hr

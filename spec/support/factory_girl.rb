@@ -8,12 +8,12 @@ RSpec.configure do |config|
       type: :server_db, path: 'http://localhost:7475'
     }
   ]
-  config.before(:suite) do
-    begin
-      # DatabaseCleaner.clean
-      # FactoryGirl.lint
-    ensure
-      # DatabaseCleaner.clean
-    end
-  end
+  # config.before(:suite) do
+  #   begin
+  #     # DatabaseCleaner.clean
+  #     # FactoryGirl.lint
+  #   ensure
+  #     # DatabaseCleaner.clean
+  #   end
+  # end
 end

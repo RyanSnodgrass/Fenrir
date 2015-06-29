@@ -2,6 +2,7 @@
 /  term_object = #{@term.to_json.to_s.html_safe}
 /   office_json = #{@office_json.to_s.html_safe}
 /  stakeholder_hash = #{@stakeholder_hash.to_json.to_s.html_safe}
+/ - content_for :javascripts do
 .row
   .large-8.columns
     %ul#error_list{:style => "display:none"}
@@ -27,6 +28,11 @@
       %input#deleteConfirm.tiny.button{:type => "button", :value => "Yes"}/
       %input#deleteCancel.tiny.button{:type => "button", :value => "No"}/
       %a.close-reveal-modal ×
+.row
+  .medium-9.medium-centered.columns
+    = text_field_tag "search1"
+.row
+  #search_results
 #term_detail
 
   .row
@@ -120,18 +126,18 @@
     
 
     /PERMISSION GROUPS
-    / .row
-    /   .large-12.large-centered.columns
-    /     %h5.page-title Sensitivity Classification
-    / %dl
-    /   .row
-    /     .large-6.columns
-    /       %dt Permission Group
-    /       %dd
-    /         - if current_user && current_user.can(:edit_term)
-    /           = select_tag 'permission-group', options_for_select(@permission_groups.collect{ |o| o[:text]}, @term_group ), {:prompt => "Please Choose Permission Group"}
-    /         - else
-    /           = @term_group
+    .row
+      .large-12.large-centered.columns
+        %h5.page-title Sensitivity Classification
+    %dl
+      .row
+        .large-6.columns
+          %dt Permission Group
+          %dd
+            - if current_user.can(:edit_term)
+              = select_tag 'permission-group', options_for_select(@permission_groups.collect{ |pg| pg.name}, @term.permission_group.try(:name)), {:prompt => "Please Choose Permission Group"}
+            - else
+              = @term.permission_group.try(:name)
     .row
       .large-6.columns                
         %dt Sensitivity Classification
