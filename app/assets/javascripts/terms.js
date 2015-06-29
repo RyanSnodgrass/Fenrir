@@ -1,5 +1,5 @@
 
-$(document).ready(function() {
+$(".terms.show").ready(function() {
   typed_search_val = $('#search1').val();
   executeFilter(typed_search_val);
   bindTypeaheadSearchBehavior();
