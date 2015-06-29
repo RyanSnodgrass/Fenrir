@@ -1,9 +1,4 @@
-require "net/http"
-require "json"
-require "open-uri"
-require "httparty"
-require "will_paginate/array"
-
+# Documentation goes here
 class PermissionGroupsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :set_permission_group, only: [:show, :update, :destroy]

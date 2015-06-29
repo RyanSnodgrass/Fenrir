@@ -7,5 +7,5 @@ class PermissionGroup
   property              :created_by
   property              :updated_by
   validates_presence_of :name
-  has_many :in,         :terms
+  has_many :out,        :terms
 end
