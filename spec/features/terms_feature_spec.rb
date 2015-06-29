@@ -49,6 +49,7 @@ describe 'Term Feature' do
       login(user)
       find('li.has-dropdown').hover
       click_link('termtiny')
+      wait_for_ajax
       within('#mytiny') do
         expect(page).to have_content('Add a New Term')
         fill_in('tname', with: 'My New Term')
@@ -62,15 +63,10 @@ describe 'Term Feature' do
     it 'updates a term', js: true do
       login(user)
       visit(term_path(term.name))
-
-      save_screenshot('../test/tmp/cache/assets/test/file.png')
       select "Limited", from: 'access_designation'
-      save_screenshot('../test/tmp/cache/assets/test/file2.png')
       click_button('Update Term')
       wait_for_ajax
-
       visit(term_path(term.name))
-       save_screenshot('../test/tmp/cache/assets/test/file3.png')
       wait_for_ajax
       expect(page).to have_select('access_designation', selected: 'Limited')
       page.driver.reset!
