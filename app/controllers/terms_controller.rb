@@ -1,8 +1,8 @@
-require 'net/http'
-require 'json'
-require 'open-uri'
-require 'httparty'
-require 'will_paginate/array'
+# require 'net/http'
+# require 'json'
+# require 'open-uri'
+# require 'httparty'
+# require 'will_paginate/array'
 require 'logger'
 
 class TermsController < ApplicationController

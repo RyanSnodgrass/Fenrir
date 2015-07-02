@@ -1,0 +1,46 @@
+%br
+.row
+  #tableauiframe.large-12.columns
+    - if @tableau_parse["width"].present? then
+      %script{:src => "https://tableau.nd.edu/javascripts/api/viz_v1.js", :type => "text/javascript"}
+      #tableauPlaceholderId.tableauPlaceholder{:style => "width:#{@tableau_parse["width"]}; height:#{@tableau_parse["height"]};"}
+        %object.tableauViz{:height => @tableau_parse["height"], :style => "display:none;", :width => @tableau_parse["width"]}
+          %param{:name => "host_url", :value => "https%3A%2F%2Ftableau.nd.edu%2F"}
+          %param{:name => "site_root", :value => ""}
+          %param{:name => "name", :value => (@tableau_parse["name"].html_safe) }
+          %param{:name => "tabs", :value => (@tableau_parse["tabs"].html_safe) }
+          %param{:name => "linktarget", :value => "_self"}
+          %param{:name => "toolbar", :value => "yes"}
+
+%br
+- if current_user.can(:publish_report)
+  .row.edit
+    .large-12.large-centered.columns
+      %h5#tableauparameters.page-title Report Parameters for Tableau
+  .row.edit
+    .large-8.columns
+      %input#tableaulink{:value => "#{@report.tableau_link}", :placeholder => "Tableau Embed", :type => "text"}
+
+/ governance terms
+.row
+  .large-12.large-centered.columns
+    %h5.page-title Data Governance Terms
+    .view
+      - if !@report["terms"].empty? then
+        - @report["terms"].each do |result|
+          - if result["name"]  then
+            %a.do_highlight{:href => "../terms/#{result["name"]}"}
+              .large-12.columns
+                = result["name"]
+                %br
+                %br
+      - else
+        Data Governance Terms have not been yet registered with this report
+    - if current_user.can(:publish_report)
+      .edit
+        .row
+          %table.raci
+            %tbody.tbody
+              %tr.term_row
+                %td
+                  %input#term_input.term_input{"data-init" => @term_reports.to_s, :type => "hidden"}

@@ -1,0 +1,9 @@
+/ External report
+- if @report_embed.present?
+  .row
+    .large-12.large-centered.columns
+      %iframe#reportframe{:frameborder => "0", :height => @report_embed["height"], :scrolling => "no", :src => @report_embed["external_uri"], :width => @report_embed["width"]}
+- else
+  .row
+    .large-12.large-centered.columns
+      %p There is currently no embedded reports for this report

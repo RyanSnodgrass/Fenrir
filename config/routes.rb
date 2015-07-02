@@ -41,15 +41,17 @@ Rails.application.routes.draw do
   post "datasets" => 'datasets#create' #SMM
 
   get "search/:search_for" => 'search#show'
-  get "reports/:id" => 'reports#show'
-  post "reports" => 'reports#create' #SMM
-  get "reports" => 'reports#index'
-  put "reports/:id" => 'reports#update'  #SMM
-  delete "reports/:id" => 'reports#destroy'  #SMM
-  get "reports/partial_search" => 'reportss#partial_search'
+
+  resources :reports  
+  # get "reports/:id" => 'reports#show'
+  # post "reports" => 'reports#create' #SMM
+  # get "reports" => 'reports#index'
+  # put "reports/:id" => 'reports#update'  #SMM
+  # delete "reports/:id" => 'reports#destroy'  #SMM
+  # get "reports/partial_search" => 'reportss#partial_search'
 
 
-  get "/reports/access_denied" =>'reports#access_denied'
+  # get "/reports/access_denied" =>'reports#access_denied'
   get "search" => 'search#index'
   get "cas_proxy_callback/receive_pgt" => 'cas_proxy_callback#receive_pgt'
   post "cas_proxy_callback/receive_pgt" => 'cas_proxy_callback#receive_pgt'

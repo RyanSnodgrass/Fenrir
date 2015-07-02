@@ -21,6 +21,17 @@ RSpec.describe "dataset routing", :type => :routing do
   end
 end
 
+RSpec.describe 'Report routing', type: :routing do
+  describe 'GET SHOW' do
+    it "goes to the show method from 'reports/:id'" do
+      expect(:get => "/reports/1").to route_to(
+      :controller => "reports",
+      :action => "show",
+      :id => "1"
+      )
+    end
+  end
+end
 
 RSpec.describe "Term routing", :type => :routing do
   describe "GET SHOW" do
