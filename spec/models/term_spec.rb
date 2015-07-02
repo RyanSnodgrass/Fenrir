@@ -1,10 +1,10 @@
 require 'rails_helper'
-# RSpec.configure do |config|
-#   config.before :each do
-#     Term.reindex
-#     Term.searchkick_index.refresh
-#   end
-# end
+RSpec.configure do |config|
+  config.before :each do
+    Term.reindex
+    Term.searchkick_index.refresh
+  end
+end
 
 describe 'Term Class' do
 

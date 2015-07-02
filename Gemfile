@@ -85,7 +85,7 @@ gem 'unicorn'
 gem 'dotenv'
 #gem 'puma'
 #ND foundation
-gem 'nd_foundation'
+# gem 'nd_foundation'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

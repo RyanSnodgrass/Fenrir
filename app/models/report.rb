@@ -4,7 +4,7 @@ class Report
   property              :name
   property              :description
   property              :tableau_link
-  property              :report_type
+  property              :type
   property              :thumbnail_uri
   property              :gridsize
   property              :timestamp

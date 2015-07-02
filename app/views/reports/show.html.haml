@@ -67,8 +67,6 @@
       %h2#name-view.page-title
         = @report.name.html_safe
 
-
-
   .edit
     .row
       .large-12.columns
@@ -88,7 +86,7 @@
 /- if @report.type == "Tableau"
 /  = render partial: "partial_tableau_show", locals: { tableau_parse: @tableauparse }, layout: false
 
-/ This is a fancy idea to only have to call one type of partial depending on what the report type
+/ This is a fancy idea to only have to call one type of partial depending on what the report type is
 / = render partial: "partial_#{@report.type}_show", locals: { my_variable: @my_variable}, layout:false
 
 /// PHOTO ///
@@ -134,7 +132,7 @@
 /                   %input#role_input.role_input{"data-init" => @report_roles_json.to_s, :type => "hidden"}
 ///   ///
 
-
+/// CREATED/UPDATED ///
 / .row
 /   .large-12.columns
 /     %h5.page-title Additional Information
@@ -155,6 +153,7 @@
 /       %dd
 /         = @report["report"]["datasource"]
 
+/// OFFICE OWNER ///
 / .row
 /   .large-12.large-centered.columns
 /     %h5.page-title Office Owner
@@ -175,6 +174,7 @@
 /   .large-6.columns
 
 /     = select_tag 'type', options_for_select(["Tableau"], @report["report"]["report_type"]), { :include_blank => true, :prompt => "Please Choose Type"}
+
 .row.edit
   .medium-2.medium-offset-4.columns
     %input#updateReportButton.small.button.expand{:type => "button", :value => "Update Report"}

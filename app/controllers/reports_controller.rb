@@ -177,7 +177,7 @@ class ReportsController < ApplicationController
       :name,
       :description,
       :tableau_link,
-      :report_type,
+      :type,
       :thumbnail_uri,
       :gridsize,
       :timestamp,

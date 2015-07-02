@@ -144,9 +144,6 @@ GEM
     multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    nd_foundation (0.0.3)
-      foundation-rails
-      rails (>= 3.2.18)
     neo4j (4.1.5)
       active_attr (~> 0.8)
       activemodel (~> 4)
@@ -307,7 +304,6 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   mini_magick
-  nd_foundation
   neo4j (~> 4.1.1)
   nyan-cat-formatter
   poltergeist
