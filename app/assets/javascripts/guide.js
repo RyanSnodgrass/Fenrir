@@ -1,4 +1,4 @@
-/*
+
 $(document).ready(
   function() {
     executeFilter();
@@ -13,7 +13,7 @@ $(document).ready(
     })
 
     // Puts the default greyed out text in the search box
-    $('#search1').watermark('Search');
+    $('#search1').watermark('Search All');
   }
 )
 
@@ -167,4 +167,3 @@ function highlightSearchString() {
 function displayLoading() {
   $('#search_results_right').html("<div class='search_results_msg'><img src='/assets/ajax-loader.gif'></div>")
 }
-*/

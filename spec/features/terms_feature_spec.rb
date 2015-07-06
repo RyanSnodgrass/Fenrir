@@ -2,11 +2,10 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
-# options = { js_errors: false }
-# Capybara.register_driver :poltergeist do |app|
-#   Capybara::Poltergeist::Driver.new(app)
-# end
-
+options = { window_size: [1300, 800] }
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, options)
+end
 describe 'Term Feature' do
   let(:user) { create(:user) }
   let(:term) { create(:term) }

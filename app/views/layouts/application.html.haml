@@ -30,22 +30,23 @@
   %main.site-content{:role => "main"}
     - if request.path == "/"
 
-      .fullWidth.frontPage.noImage
-        .small-12.small-centered.columns
-          %h1.titleHeaderNoImage UNIVERSITY <i>of</i> NOTRE DAME
-          %h2.titleHeaderNoImage Business Intelligence Portal
-
-      = render "/guide/index"
-
-      - unless current_user
+      - if current_user.logged_in?
+        .fullWidth.noImage
+          .small-12.small-centered.columns
+            %h1.titleHeaderNoImage UNIVERSITY <i>of</i> NOTRE DAME
+            %h2.titleHeaderNoImage Business Intelligence Portal
+        = render "/guide/index"
+      - else
         .fullWidth.frontPage.frontPageImage.mainImage
           .small-12.small-centered.columns
             %h1.titleHeader UNIVERSITY <i>of</i> NOTRE DAME
             %h2.titleHeader Business Intelligence Portal
           .fullWidth
             .large-4.medium-8.medium-centered.columns
-              = link_to "LOG IN", login_path, class: "button large round"
+              = link_to "LOG IN", foo_path, class: "button large round"
           .fullWidth.downArrow.blink_me
+      
+
 
 
       #whatAreYouLookingFor.fullWidth

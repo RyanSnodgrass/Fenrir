@@ -38,7 +38,7 @@ function executeFilter(t_s_v) {
   displayLoading()
   $.get( '/terms/search', {'search_query': t_s_v }, function(data) {
     $('#search_results').html(data)
-    highlightSearchString()
+    // highlightSearchString()
   });
 
 
@@ -54,10 +54,10 @@ function executeFilter(t_s_v) {
   // )
 }
 
-function highlightSearchString() {
-  search_string = $('#search1').val()
-  $(".do_highlight").highlight( search_string )
-}
+// function highlightSearchString() {
+//   search_string = $('#search1').val()
+//   $(".do_highlight").highlight( search_string )
+// }
 
 function displayLoading() {
   $('#search_results').html("<div class='search_results_msg'><img src='/assets/ajax-loader.gif'></div>")
