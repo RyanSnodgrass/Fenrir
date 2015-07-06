@@ -2,17 +2,17 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
-# options = { js_errors: false }
-# Capybara.register_driver :poltergeist do |app|
-#   Capybara::Poltergeist::Driver.new(app)
-# end
+options = { window_size: [1300, 800] }
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, options)
+end
 
 describe 'User Logging In' do
   let(:user) { create(:user) }
   after { page.driver.reset! }
   it "will first visit my app's root page" do
     visit('/')
-    expect(page).to have_content('Welcome To The BI Portal')
+    expect(page).to have_content('Business Intelligence Portal')
     expect(page).to have_content('Log In')
   end
 
@@ -38,6 +38,7 @@ describe 'User Logging In' do
   end
   it 'switches from logged in to logged out', js: true do
     visit('/')
+    save_screenshot('../test/tmp/cache/assets/test/file.png')
     click_link('Log In')
     fill_in 'username', with: user.net_id
     fill_in 'password', with: 'any password'
@@ -45,7 +46,7 @@ describe 'User Logging In' do
     expect(page).to have_content('My User Name')
     find('li.has-dropdown').hover
     click_link('Log Out')
-    expect(page).to have_content('Welcome To The BI Portal')
+    expect(page).to have_content('Business Intelligence Portal')
     expect(page).to have_content('Log In')
   end
 end

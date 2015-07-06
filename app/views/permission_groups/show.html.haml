@@ -35,7 +35,7 @@
 .row
   .large-12.columns
     #name{:class => ('editable' if current_user.can(:edit_term))}
-      %h2.page-title
+      %h2
         = @permission_group.name.html_safe
 
 
