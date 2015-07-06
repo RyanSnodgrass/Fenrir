@@ -38,7 +38,7 @@
   .row
     .large-12.columns
       #name{:class => ('editable' if current_user.can( :edit_term ))}
-        %h2.page-title
+        %h2
           = @term.name
   .row
     .large-12.columns
@@ -50,7 +50,7 @@
   %dl
     .row
       .large-12.columns
-        %h5.page-title General Information
+        %h5 General Information
         %dt Data Availability
         %dd
           #data_availability{:class => ('editable' if current_user && current_user.can( :edit_term ))}
@@ -128,7 +128,7 @@
     /PERMISSION GROUPS
     .row
       .large-12.large-centered.columns
-        %h5.page-title Sensitivity Classification
+        %h5 Sensitivity Classification
     %dl
       .row
         .large-6.columns

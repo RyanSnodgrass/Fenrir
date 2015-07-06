@@ -41,7 +41,7 @@
             - if current_user.can(:edit_term)
               %li.title.back.js-generated
               %li
-                %a.noBorderBottom.listHighlight{"data-reveal-id" => "mytiny", :href => "#"}
+                %a#termtiny.noBorderBottom.listHighlight{"data-reveal-id" => "mytiny", :href => "#"}
                   Add New Term
                 #mytiny.reveal-modal.tiny{"data-reveal" => ""}
                   %h2 Add a New Term
@@ -65,7 +65,7 @@
                       %input#addOfficeButton.expand.button{:type => "button", :value => "Save Office"}
                     %a.close-reveal-modal ×
               %li
-                %a.noBorderBottom.listHighlight{"data-reveal-id" => "permissiongrouptiny", :href => "#"}
+                %a#addpglink.noBorderBottom.listHighlight{"data-reveal-id" => "permissiongrouptiny", :href => "#"}
                   Add New Permission Group
                 #permissiongrouptiny.reveal-modal.tiny{"data-reveal" => ""}
                   %h2 Add New Permission Group
