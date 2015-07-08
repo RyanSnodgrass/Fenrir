@@ -6,19 +6,18 @@ require "will_paginate/array"
 
 class ReportsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_report,     only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create, :destroy, :update]
+  before_action :set_report,   only: [:show, :update, :destroy]
+  before_action :authenticate, only: [:show, :create, :destroy, :update]
 
   def update
-    logger.debug("JSON sent to muninn: #{params[:reportJSON]}")
-    logger.debug("#####################################")
-    logger.debug("params sent to Muninn Again + #{params}")
-    response = Muninn::Adapter.put( "/reports/params[:name]", session[:cas_user], session[:cas_pgt], params[:reportJSON] )
-
-    render status: response.code, json: response.body
+    if @report.update(report_params)
+      @report.save
+      render status: response.code, json: response.body
+      head :ok
+    end
   end
 
-  def tableau_parse( text )
+  def tableau_parse(text)
     @tableau_parse = {}
     if text.present?
       a = text.match(/width=\'([^"]*?)\'/)
@@ -40,10 +39,8 @@ class ReportsController < ApplicationController
   end
 
   def destroy
-    logger.debug("#####################################")
-    logger.debug("params sent to Muninn Again + #{params}")
-    response = Muninn::Adapter.delete( "/reports/id/" + params[:id], session[:cas_user], session[:cas_pgt] )
-    render status: response.code, json: response.body
+    @report.destroy
+    head :ok
   end
 
   def show

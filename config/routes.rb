@@ -42,7 +42,7 @@ Rails.application.routes.draw do
 
   get "search/:search_for" => 'search#show'
 
-  resources :reports  
+  resources :reports
   # get "reports/:id" => 'reports#show'
   # post "reports" => 'reports#create' #SMM
   # get "reports" => 'reports#index'

@@ -54,7 +54,6 @@ $(document).ready(function(){
     $('.role_input').val(function() {
       $(this).data().select2.updateSelection( $(this).data('init') )
     });
-
   }
 
   // if(typeof term_object != 'undefined')  {
@@ -82,50 +81,6 @@ $(document).ready(function(){
     });
   // }
 
-
-  if(typeof report_object != 'undefined')  {
-    
-    $('#updateReportButton').click( function() {
-      error_exist = false;
-      clearValidationErrors();
-      // $('a.close-alert-box').trigger('click');
-      // alert("updating report object");
-      json_access_array = $('#role_input').select2('data');
-      selected_office = $('#office_owner').val();
-      // selected_type = $('#type').val();
-      error_text = "";
-      if (jQuery.isEmptyObject(json_access_array)){
-        // alert('addValidationError for json_access_array');
-        addValidationError( "alert", "You Must Select a Security Role");
-        error_exist = true;
-      }
-      if(jQuery.isEmptyObject( selected_office )) {
-        error_exist = true;
-        // alert('addValidationError for selected_office');
-        addValidationError( "alert", "You Must Select an Office That Owns This Report");
-      }
-      // add back in when ready to edit report type
-      // if(jQuery.isEmptyObject( selected_type )) {
-      //   error_exist = true;
-      //   addValidationError( "alert", "You Must Select the Report Type");
-      // }
-      if( error_exist ) {
-        
-        showValidationErrors();
-        return false;
-      }
-      // alert("before update report object")
-      updateReportObject( report_object );
-      updateReport( report_object );
-    });
-    $('#deleteConfirm').click( function() {
-      $('a.close-reveal-modal').trigger('click');
-      deleteReport(report_object.id);
-    });
-    $('#deleteCancel').click( function() {
-      $('a.close-reveal-modal').trigger('click');
-    });
-  }
 
   if(typeof office_detail_json != 'undefined')  {
 
@@ -249,6 +204,7 @@ function changetoviewmode() {
 }
 
 function clearValidationErrors() {
+  alert('hey inside clear validation errors')
   error_list_children = $('#error_list > li')
   error_list_children.remove();
   $('#error_list').hide();
@@ -392,197 +348,9 @@ function createReport(report_object ) {
 
 }
 
-function updateReportObject(report_object ) {
-  clearValidationErrors();
-  tinymce.triggerSave();
-
-  console.log(report_object );
-   $('.editable').each(function() {
-    id = $(this).attr('id');
-    if ( id ) {
-      p = tinymce.get(id).getContent()
-      console.log(id);
-      // if (id !='t_width' && id !='t_height'  && id !='t_name'&& id !='t_tabs') {
-      report_object[id] = p;
-      // }
-      console.log(report_object);
-      // if ( (id =="t_height") || (id =="t_width") || (id =="t_tabs") ){
-      //   var StrippedString = p.replace(/(<([^>]+)>)/ig,"");
-      //   p = StrippedString;
-      // }
-      // if (id =='t_width'){
-      //    w = p
-
-      // }
-      // if (id =='t_height'){
-      //    h =p
-
-      // }
-      // if (id =='t_tabs'){
-      //    t =p
-
-      // }
-      // if (id =='t_name'){
-
-      //    n = p.replace(/(<p>|<\/p>)/g, "");
-      //    n = n.replace(/&amp;/g, '&');
-      //    n = n.replace(/(")/g, "");
-      // }
-      // if (id =='report_type' || id == 'datasource' ){
-
-      //   p = p.replace(/(<p>|<\/p>)/g, "");
-
-      // }
-
-      
-    }
-  })
-  // report_object["embedJSON"] = "{\"width\": \""+w+"\", \"height\" : \"" + h+"\",\"name\":\""+ n+"\",\"tabs\":\""+t+"\"}"
-
-
-  report_object["terms"] = []
-  var term_array = []
-
-
-  var term_text = null;
-  json_term_array = $('#term_input').select2('data')
-  console.log("This is the json_term_array: " + json_term_array);
-  for (var j = 0; j < json_term_array.length; j++ ) {
-    report_object["terms"].push( { name: json_term_array[j]["text"]} )
-    var term_exists = false;
-    if (term_array != null )  {
-      for (var k=0; k<term_array.length; k++){
-        if (json_term_array[j]["text"] == term_array[k]["name"])  {
-          term_exists = true;
-          break;
-        }
-      }
-    }
-    if (!term_exists){
-      term_array.push({name: json_term_array[j]["text"]})
-    }
-    else{
-      if (!term_text)
-        term_text = json_term_array[j]["text"]
-      else if (term_text.search( json_term_array[j]["text"]) < 0 ){
-        term_text  += " , "+ json_term_array[j]["text"]
-      }
-    }
-  }
-
-  // report_object["report_type"] = $('#type').val();
-  report_object["name"] = $('#name-edit').val();
-  report_object["tableau_link"] = $('#tableaulink').val();
-  report_object["datasource"] = $('#datasource').val();
-
-  // report office owner
-  report_object["offices"] = []
-
-  console.log('grabbed offices from dom' + selected_office)
-  report_object["offices"].push( { name: selected_office, stake: "Responsible"} )
-  console.log('report object json with office' + report_object);
-
-
-
-
-  // By default, we are setting write ability to true for all associated role nodes
-  report_object["allows_access_with"] = []
-  var access_array=[]
-
-  var access_text =null;
-
-
-
-
-  console.log(json_access_array);
-  for ( var j = 0; j < json_access_array.length; j++ ) {
-
-    report_object["allows_access_with"].push( { name: json_access_array[j]["text"], allow_update_and_delete: true} )
-    var access_exists = false;
-    if (access_array !=null )  {
-      for (var k=0; k<access_array.length; k++){
-        if (json_access_array[j]["text"] == access_array[k]["name"])  {
-          access_exists = true;
-          break;
-        }
-      }
-    }
-
-    if (!access_exists){
-      access_array.push({name: json_access_array[j]["text"]})
-    }
-    else{
-      if (!access_text){
-        access_text = json_access_array[j]["text"]
-      }
-      else if (access_text.search( json_access_array[j]["text"]) <0){
-        access_text  += " , "+ json_access_array[j]["text"]
-      }
-    }
-  }
-  return true;
-}
-
-
-function updateReport( report_object ) {
-
-  // commenting out as the image upload process happens on click now
-  $('form#report_image_upload').submit()
-
-
-  $.ajax({
-      url: report_object.id,
-      type: 'PUT',
-      data: {"reportJSON": JSON.stringify(report_object) },
-      dataType: 'json',
-      success: function (data) {
-         console.log("succcess block")
-         var url = escape(report_object.name);
-         window.location.href = url;
-         addSuccessMessage("success", "<b>" + report_object.name + "</b>" +  " updated successfully. " );
-         showSuccessMessage();
-
-      },
-      error: function( xhr, ajaxOptions, thrownError) {
-         addValidationError( "alert", "Update Report has errors: " + xhr.responseText);
-           showValidationErrors();
-
-      }
-    })
-    /*.done(function(data) {
-      console.log("done block")
-      //$('form#report_image_upload').submit()  // silently submit the image upload.  how to validate??    
-      var url = escape(report_object.name)
-      window.location.href = url
-    });
-  */
-
-
-  
-
-}
-
-function deleteReport( reportid ) {
-    $.ajax({
-      url:   reportid,
-      type: 'DELETE',
-      success: function(data, status, xhr){
-        addSuccessMessage("success", "<b>" + data.message + ". Please wait for Reports Page display.</br>" )
-        showSuccessMessage();
-        var myHashLink = "browse/reports";
-        window.location.href = '/' + myHashLink;
-      },
-      error: function(xhr, status, error) {
-        addValidationError( "alert", "Report delete has errors: " + xhr.responseText);
-        showValidationErrors()
-      }
-  });
-}
-
-
 function deleteTerm( termid ) {
   $.ajax({
-    url:   $('#mytinyDelete').attr('ajax_path'),
+    url:  $('#mytinyDelete').attr('ajax_path'),
     type: 'DELETE',
     success: function(data, status, xhr){
       addSuccessMessage("success", "<b>" + data.message + ". Please wait for Glossary Page display.</br>" )
@@ -730,7 +498,6 @@ function updatePermissionGroup( permission_group_object ) {
       url: permission_group_object.id,
       type: 'PUT',
       data: { "permission_group" : permission_group_object},
-      // dataType: 'json',
       success: function (data) {
         var url = escape(permission_group_object.name);
         window.location = url;
