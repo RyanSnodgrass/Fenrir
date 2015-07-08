@@ -1,7 +1,3 @@
-require "net/http"
-require "json"
-require "open-uri"
-require "httparty"
 require "will_paginate/array"
 
 class ReportsController < ApplicationController
@@ -34,8 +30,11 @@ class ReportsController < ApplicationController
 
 
   def create
-    response = Muninn::Adapter.post( '/reports/', session[:cas_user], session[:cas_pgt], params[:report])
-    render status: response.code, json: response.body
+    @report = Report.new(report_params)
+    if @report.save
+      render status: response.code, json: response.body
+      head :ok
+    end
   end
 
   def destroy
@@ -179,7 +178,6 @@ class ReportsController < ApplicationController
       :gridsize,
       :timestamp,
       :embedJSON,
-      :terms
-    )
+      :terms)
   end
 end

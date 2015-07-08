@@ -157,27 +157,6 @@ $(document).ready(function(){
     $('a.close-reveal-modal').trigger('click');
     addPermissionGroup(permission_group_new);
   });
-
-
-  $('#createReportButton').click(function() {
-    var rname = $('#rname').val();
-    report_new = {
-      "name": rname,
-      "description": "",
-      "report_type": "Tableau",
-      "embedJSON" : "{\"width\": \"\",\"height\": \"\" ,\"name\": \"\"}",
-      "allows_access_with" : [
-        {
-        "name" : "General Analyst",
-        "allow_update_and_delete" : true
-        }
-      ]
-
-    };
-    $('a.close-reveal-modal').trigger('click'); 
-    createReport(report_new);
-    // new_report = true
-  });
 });
 
 function changetoeditmode() {
@@ -326,27 +305,27 @@ function updateTermObject(term_object ) {
   return term_object;
 }
 
-function createReport(report_object ) {
-  report_object_string = JSON.stringify(report_object)
-  $.ajax({
-     url : '/reports',
-     type: 'POST',
-     data: { "report": report_object_string},
-     dataType: 'json',
-     success: function (data) {
-      addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
-      showSuccessMessage();
-      var new_report = true;
-      var url = escape('/reports/'+ report_object.name)
-      window.location = url;
-   },
-     error: function( xhr, ajaxOptions, thrownError) {
-     addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
-     showValidationErrors();
-   }
-  });
+// function createReport(report_object ) {
+//   report_object_string = JSON.stringify(report_object)
+//   $.ajax({
+//      url : '/reports',
+//      type: 'POST',
+//      data: { "report": report_object_string},
+//      dataType: 'json',
+//      success: function (data) {
+//       addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
+//       showSuccessMessage();
+//       var new_report = true;
+//       var url = escape('/reports/'+ report_object.name)
+//       window.location = url;
+//    },
+//      error: function( xhr, ajaxOptions, thrownError) {
+//      addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
+//      showValidationErrors();
+//    }
+//   });
 
-}
+// }
 
 function deleteTerm( termid ) {
   $.ajax({
@@ -399,7 +378,6 @@ function createTerm( term_object ) {
      url : '/terms',
      type: 'POST',
      data: { "term": term_object },
-     // dataType: 'json',
      success: function (data) {
       console.log("success create term")
       addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
@@ -415,28 +393,6 @@ function createTerm( term_object ) {
   })
 
 }
-
-function createReport( report_object ) {
-  report_object_string = JSON.stringify(report_object)
-  $.ajax({
-     url : '/reports',
-     type: 'POST',
-     data: { "report": report_object_string},
-     dataType: 'json',
-     success: function (data) {
-      addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
-      showSuccessMessage();
-      var url = escape('/reports/'+ report_object.name)
-      window.location = url;
-   },
-     error: function( xhr, ajaxOptions, thrownError) {
-     addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
-     showValidationErrors()
-   }
-  })
-
-}
-
 
 function addOffice( office_object ) {
   $.ajax({
@@ -455,7 +411,6 @@ function addOffice( office_object ) {
       showValidationErrors()
     }
   })
-
 }
 
 function addPermissionGroup( permission_group_object ) {

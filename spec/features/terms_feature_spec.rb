@@ -46,15 +46,17 @@ describe 'Term Feature' do
     end
     it 'adds a new term', js: true do
       login(user)
+      visit '/'
       find('li.has-dropdown').hover
-      click_link('termtiny')
+      click_link('newtermlink')
       wait_for_ajax
-      within('#mytiny') do
+      within('#newtermmodal') do
         expect(page).to have_content('Add a New Term')
         fill_in('tname', with: 'My New Term')
         click_button('Save Term')
       end
       wait_for_ajax
+      expect(page).to have_css('.terms.show')
       expect(page).to have_content('General Information')
       expect(page).to have_content('My New Term')
       page.driver.reset!

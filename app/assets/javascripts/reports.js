@@ -1,16 +1,37 @@
-$(".reports.show").ready(function() {  
+$(document).ready(function(){
   $('#createReportButton').click(function() {
     var rname = $('#rname').val();
     report_new = {
       "name": rname,
       "description": "",
-      "report_type": "Tableau",
-      "embedJSON" : "{\"width\": \"\",\"height\": \"\" ,\"name\": \"\"}"
-    };
+      "report_type": "Tableau"};
     $('a.close-reveal-modal').trigger('click');
     createReport(report_new);
-    // new_report = true
   });
+  function createReport( report_object ) {
+    $.ajax({
+      url : '/reports',
+      type: 'POST',
+      data: { "report": report_object },
+      success: function (data) {
+        console.log('success create report')
+        addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
+        showSuccessMessage();
+        var url = escape('/reports/'+ report_object.name)
+        window.location = url;
+      },
+      error: function( xhr, ajaxOptions, thrownError) {
+        console.log('non success create report')
+        addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
+        showValidationErrors()
+      }
+    });
+  }
+});
+$(".reports.show").ready(function() {  
+  
+ 
+
   $('#updateReportButton').click( function() {
     report_object = {}
     error_exist = false;

@@ -66,5 +66,24 @@ RSpec.describe ReportsController do
       post :create, report: report
       expect(response.status).to eq(401)
     end
+    it 'add a report to the database' do
+      establish_current_user(user)
+      expect{
+        post :create, report: attributes_for(:report)
+      }.to change(Report, :count).by(1)
+    end
+    it "won't add the report without authentication" do
+      expect{
+        post :create, report: attributes_for(:report)
+      }.to change(Report, :count).by(0)
+    end
+    it 'returns back the added report' do
+      establish_current_user(user)
+      @report = attributes_for(:report,
+        name: 'My Report'
+      )
+      post :create, report: @report
+      expect(assigns(:report).name).to eq('My Report')
+    end
   end
 end

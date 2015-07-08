@@ -35,6 +35,21 @@ describe 'Report Page' do
     expect(page).to have_no_css('#updateReportButton')
     expect(page).to have_no_css('#deleteReportButton')
   end
+  it 'creates a report', js: true do
+    login(user)
+    visit '/'
+    find('li.has-dropdown').hover
+    click_link('newreportlink')
+    wait_for_ajax
+    within('#newreportmodal') do
+      expect(page).to have_content('Add New Report')
+      fill_in('rname', with: 'My New Report')
+      click_button('Save Report')
+    end
+    wait_for_ajax
+    expect(page).to have_css('.reports.show')
+    expect(page).to have_content('My New Report')
+  end
   it 'updates report', js: true do
     login(user)
     visit(report_path(report.name))
