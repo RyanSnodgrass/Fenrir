@@ -162,9 +162,6 @@
             - if @term.sensitivity_access_notes.present?  then
               = @term.sensitivity_access_notes.html_safe
             
-              
-
-
 
   - if current_user.can(:edit_term)
     .row
