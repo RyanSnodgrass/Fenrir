@@ -25,10 +25,10 @@
 
             - if current_user.can( :publish_report )
               %li
-                %a.noBorderBottom.listHighlight{"data-reveal-id" => "reporttiny", :href => "#"}
+                %a#newreportlink.noBorderBottom.listHighlight{"data-reveal-id" => "newreportmodal", :href => "#"}
                   Register New Report
 
-                #reporttiny.reveal-modal.tiny{"data-reveal" => ""}
+                #newreportmodal.reveal-modal.tiny{"data-reveal" => ""}
                   %h2 Add New Report
                   Name:
                   %input#rname{:name => "rname", :type => "text"}
@@ -41,9 +41,9 @@
             - if current_user.can(:edit_term)
               %li.title.back.js-generated
               %li
-                %a#termtiny.noBorderBottom.listHighlight{"data-reveal-id" => "mytiny", :href => "#"}
+                %a#newtermlink.noBorderBottom.listHighlight{"data-reveal-id" => "newtermmodal", :href => "#"}
                   Add New Term
-                #mytiny.reveal-modal.tiny{"data-reveal" => ""}
+                #newtermmodal.reveal-modal.tiny{"data-reveal" => ""}
                   %h2 Add a New Term
                   Name:
                   %input#tname{:name => "tname", :type => "text"}

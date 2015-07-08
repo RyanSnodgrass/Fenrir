@@ -22,41 +22,41 @@
       %a.close{:href => "#"} ×
 .row
   .large-12.columns
-    #mytinyDelete.reveal-modal.tiny{"data-reveal" => ""}
+    #mytinyDelete.reveal-modal.tiny{"data-reveal" => "", ajax_path: "/reports/#{@report.name}"}
       %h2 Deleting Report
       %br
       %b Are you sure?
       %br
       %br
-      %input#deleteConfirm.tiny.button{:type => "button", :value => "Yes"}
-      %input#deleteCancel.tiny.button{:type => "button", :value => "No"}
+      %input#deleteReportConfirm.tiny.button{:type => "button", :value => "Yes"}
+      %input#deleteReportCancel.tiny.button{:type => "button", :value => "No"}
       %a.close-reveal-modal ×
 - if current_user.can(:do_admin_activities)
   .row
     .large-1.large-offset-11.columns
       #currentmode Preview Mode
-      #edittoggle.switch.radius
-        %input#editmode{:type => "checkbox"}
-        %label{:for => "editmode"}
+      #edittoggle
+        %fieldset.switch.radius{:tabindex => "0"}
+          %input#editmode{:type => "checkbox"}
+          %label{:for => "editmode"}
 -else
-  - if @report.type != "Aggregation"
-    - if @report.type != "External"
-    
-      - if current_user.can(:publish_report)
+  - if current_user.can(:publish_report)
+    - if @report.type != "Aggregation"
+      - if @report.type != "External"
         .row
           .large-1.large-offset-11.columns
             #currentmode Preview Mode
-            #edittoggle.switch.radius
-              %input#editmode{:type => "checkbox"}
-              %label{:for => "editmode"}
-
+            #edittoggle
+              %fieldset.switch.radius{:tabindex => "0"}
+                %input#editmode{:type => "checkbox"}
+                %label{:for => "editmode"}
 #report_detail
 
   - if current_user.can( :publish_report )
     .edit
       .row
         .large-12.columns
-          %h3.page-title Name    
+          %h3 Name    
       .row  
         .large-6.columns
           %input#name-edit{:value => "#{@report.name}", :type => "text"}
@@ -64,13 +64,13 @@
   .row.view  
     / $('#name-view').text().trim();    
     .large-12.columns
-      %h2#name-view.page-title
+      %h2#name-view
         = @report.name.html_safe
 
   .edit
     .row
       .large-12.columns
-        %h4.page-title Description:
+        %h4 Description:
   .row
     .large-12.columns
       #description
