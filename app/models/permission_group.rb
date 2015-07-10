@@ -1,6 +1,12 @@
 # Documentation goes here
 class PermissionGroup
   include Neo4j::ActiveNode
+  searchkick
+  def search_data
+    {
+      name: name
+    }
+  end
   property              :name, constraint: :unique
   property              :created_at
   property              :updated_at

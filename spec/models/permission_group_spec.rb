@@ -10,9 +10,17 @@ describe 'PermissionGroup Class' do
     pg.terms << term
     expect(pg.terms).to eq([term])
   end
+  context 'search feature' do
+    it 'uses search to find a permission_group' do
+      @permission_group = create(:permission_group)
+      # @permission_group.reindex
+      PermissionGroup.reindex
+      # PermissionGroup.searchkick_index.refresh
+      results = PermissionGroup.search @permission_group.name
+      expect(results.first.name).to eq(@permission_group.name)
+    end
+  end
 end
-
-
 
 #   it 'starts with no comments' do
 #     expect(post.comments).to be_empty
@@ -45,6 +53,7 @@ end
 #     that_post = create(:post)
 #     this_person.posts << [this_post, that_post]
 #     post.comments << [my_comment, this_comment]
-#     expect(post.comments.author.posts).to include(this_post && that_post && my_post)
+#     expect(post.comments.author.posts).to include(
+#       this_post && that_post && my_post)
 #   end
 # end

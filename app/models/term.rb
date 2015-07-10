@@ -2,6 +2,12 @@
 class Term
   include Neo4j::ActiveNode
   searchkick
+  def search_data
+    {
+      name: name,
+      definition: definition
+    }
+  end
   property              :name, constraint: :unique
   property              :definition
   property              :source_system

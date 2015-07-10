@@ -28,9 +28,12 @@ $(document).ready(function(){
     });
   }
 });
-$(".reports.show").ready(function() {  
-  
- 
+
+$(".reports.show").ready(function() {
+
+  $('#image').change( function() {
+    $('form#report_image_upload').submit();
+  });
 
   $('#updateReportButton').click( function() {
     report_object = {}
@@ -201,7 +204,7 @@ $(".reports.show").ready(function() {
         addValidationError( "alert", "Update Report has errors: " + xhr.responseText);
         showValidationErrors();
       }
-    })
+    });
   }
   function deleteReport( ) {
     $.ajax({

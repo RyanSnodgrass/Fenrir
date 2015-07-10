@@ -6,7 +6,8 @@ describe 'User Class' do
 
   let(:user) { create(:user) }
   ###########   ###########
-  # WHEN SECURITY IS IMPLEMENTED, MAKE SURE TO DEFINE POWER USERS AS THEIR OWN CLASS
+  # WHEN SECURITY IS IMPLEMENTED, MAKE SURE TO DEFINE
+  # POWER USERS AS THEIR OWN CLASS
   # THIS WAY WHEN THE TESTS RUN, THEY'LL FAIL CORRECTLY
   ###########   ###########
   it 'is valid' do
