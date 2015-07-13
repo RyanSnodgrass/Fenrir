@@ -60,5 +60,20 @@ describe 'Term Class' do
       results = Term.search @term.sensitivity_classification, fields: [:name]
       expect(results.count).to eq(0)
     end
+    it 'performs partial word search for typeahead' do
+      Term.create(name: 'Academic Calendar', definition: 'New York')
+      Term.create(name: 'Student', definition: 'Manhatten')
+      Term.reindex
+      r = Term.search 'calend', fields: [{name: :word_start}]
+      expect(r.first.name).to eq('Academic Calendar')
+      r = Term.search 'acad', fields: [{name: :word_start}]
+      expect(r.first.name).to eq('Academic Calendar')
+      r = Term.search 'stud', fields: [{name: :word_start}]
+      expect(r.first.name).to eq('Student')
+      r = Term.search 'student', fields: [{name: :word_start}]
+      expect(r.first.name).to eq('Student')
+      r = Term.search 'academic', fields: [{name: :word_start}]
+      expect(r.first.name).to eq('Academic Calendar')
+    end
   end
 end

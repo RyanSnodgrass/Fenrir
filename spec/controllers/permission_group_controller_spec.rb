@@ -1,5 +1,5 @@
 require 'rails_helper'
-# require 'json'
+
 RSpec.describe PermissionGroupsController do
   let(:permission_group) { create(:permission_group) }
   let(:user) { create(:user) }

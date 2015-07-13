@@ -1,7 +1,7 @@
 # Documentation goes here
 class Term
   include Neo4j::ActiveNode
-  searchkick
+  searchkick word_start: [:name], autocomplete: [:name]
   def search_data
     {
       name: name,
