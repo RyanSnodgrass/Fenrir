@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SearchController do
-  describe 'typeahead' do
+  describe 'typeahead_terms' do
     it 'renders json' do
       Term.create(name: 'my term', definition: 'New York')
       get :typeahead_terms, query: 'my'
@@ -21,6 +21,15 @@ RSpec.describe SearchController do
       get :typeahead_terms, query: 'Cale'
       parsed_body = JSON.parse(response.body)
       expect(parsed_body).to eq(['Academic Calendar'])
+    end
+  end
+  describe 'typeahead_terms_all' do
+    it 'renders json with all terms' do
+      @term = create(:term)
+      @term2 = Term.create(name: 'Academic Calendar', definition: 'New York')
+      get :typeahead_terms_all
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body).to eq([[@term.name, @term.definition],[@term2.name, @term2.definition]])
     end
   end
 end
