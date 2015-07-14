@@ -29,7 +29,7 @@ RSpec.describe SearchController do
       @term2 = Term.create(name: 'Academic Calendar', definition: 'New York')
       get :typeahead_terms_all
       parsed_body = JSON.parse(response.body)
-      expect(parsed_body).to eq([[@term.name, @term.definition],[@term2.name, @term2.definition]])
+      expect(parsed_body).to eq([@term.name, @term2.name])
     end
   end
 end

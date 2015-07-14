@@ -92,10 +92,10 @@ $lightGray:   rgb(182,182,182);
 .glossary:hover {
   background-image: url('./images/glossary-icon-black.svg');
 }
-.reports {
+.reports-icon {
   background-image: url('./images/reports-icon-white.svg');
 }
-.reports:hover {
+.reports-icon:hover {
   background-image: url('./images/reports-icon-black.svg');
 }
 .datasets {
@@ -113,7 +113,7 @@ $lightGray:   rgb(182,182,182);
 }
 
 .glossary,
-.reports,
+.reports-icon,
 .datasets {
   height: 100%;
   width: 100%;
