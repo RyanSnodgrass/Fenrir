@@ -1,0 +1,3 @@
+%h3 Main search Result
+- results.each do |result|
+    = render partial: "#{result.class.to_s.downcase}_partial_search", locals: { result: result }, layout: false
