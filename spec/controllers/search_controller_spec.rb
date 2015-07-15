@@ -1,10 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe SearchController do
-  xdescribe 'typeahead_terms' do
+  describe 'typeahead_terms' do
     it 'renders json' do
-      Term.create(name: 'my term', definition: 'New York')
-      get :typeahead_terms, query: 'my'
+      Report.create(name: 'Awesome Report', description: 'New York')
+      Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+      Report.create(name: 'super Awesome Report', description: '')
+      Report.create(name: 'Yonkers', description: 'broadway')
+      Report.create(name: 'awesome stupendous', description: 'wall street')
+      Report.create(name: 'Queens', description: 'Bronx')
+      Term.create(name: 'awesome', definition: 'laguardia')
+      Term.create(name: 'Awesome Term')
+      Term.create(name: 'Manhattan', definition: 'Its kinda awesome')
+      Term.create(name: 'super Awesome Term', definition: 'still awesome')
+      Term.create(name: 'Yonkers', definition: 'broadway')
+      Term.create(name: 'awesome stupendous', definition: 'wall street')
+      Term.create(name: 'Queens', definition: 'Bronx')
+      Report.reindex
+      Term.reindex
+      get :typeahead_terms, query: 'aweso'
       parsed_body = response.header['Content-Type']
       expect(parsed_body).to eq('application/json; charset=utf-8')
     end

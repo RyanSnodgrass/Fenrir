@@ -46,5 +46,41 @@ describe 'Report Class' do
       results = Report.search @report.type
       expect(results.count).to eq(0)
     end
+    it 'performs a name, description search boosting name' do
+      Report.create(name: 'Awesome Report', description: 'New York')
+      Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+      Report.create(name: 'super Awesome Report', description: 'still awesome')
+      Report.create(name: 'Yonkers', description: 'broadway')
+      Report.create(name: 'awesome stupendous', description: 'wall street')
+      Report.create(name: 'Queens', description: 'Bronx')
+      Report.reindex
+      r = Report.search 'aweso', fields: ['name^10', 'description']
+      expect(r.count).to eq(4)
+      expect(r[-1].name).to eq('Manhattan')
+    end
+    it 'searches name/description through reports and terms' do
+      Report.create(name: 'Awesome Report', description: 'New York')
+      Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+      Report.create(name: 'super Awesome Report', description: 'still awesome')
+      Report.create(name: 'Yonkers', description: 'broadway')
+      Report.create(name: 'awesome stupendous', description: 'wall street')
+      Report.create(name: 'Queens', description: 'Bronx')
+      Term.create(name: 'awesome', definition: 'laguardia')
+      Term.create(name: 'Awesome Term', definition: 'New York')
+      Term.create(name: 'Manhattan', definition: 'Its kinda awesome')
+      Term.create(name: 'super Awesome Term', definition: 'still awesome')
+      Term.create(name: 'Yonkers', definition: 'broadway')
+      Term.create(name: 'awesome stupendous', definition: 'wall street')
+      Term.create(name: 'Queens', definition: 'Bronx')
+      Report.reindex
+      Term.reindex
+      r = Report.search(
+        'aweso',
+        index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
+        fields: ['name^10', 'description', 'definition']
+      )
+      expect(r.count).to eq(9)
+      expect(r[-1].name).to eq('Manhattan')
+    end
   end
 end

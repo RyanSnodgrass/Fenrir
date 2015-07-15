@@ -60,9 +60,9 @@ describe 'Term Class' do
       results = Term.search @term.sensitivity_classification, fields: [:name]
       expect(results.count).to eq(0)
     end
-    it 'performs partial word search for typeahead' do
+    it 'performs partial word search for name' do
       Term.create(name: 'Academic Calendar', definition: 'New York')
-      Term.create(name: 'Student', definition: 'Manhatten')
+      Term.create(name: 'Student', definition: 'Manhattan')
       Term.reindex
       r = Term.search 'calend', fields: [{name: :word_start}]
       expect(r.first.name).to eq('Academic Calendar')
@@ -74,6 +74,29 @@ describe 'Term Class' do
       expect(r.first.name).to eq('Student')
       r = Term.search 'academic', fields: [{name: :word_start}]
       expect(r.first.name).to eq('Academic Calendar')
+    end
+    it 'performs partial word search for definition' do
+      Term.create(name: 'Awesome Term', definition: 'New York')
+      Term.create(name: 'Manhattan', definition: 'Its kinda awesome')
+      Term.reindex
+      r = Term.search 'aweso', fields: [:definition]
+      expect(r.count).to eq(1)
+      expect(r.first.name).to eq('Manhattan')
+      r = Term.search 'york', fields: [:definition]
+      expect(r.count).to eq(1)
+      expect(r.first.name).to eq('Awesome Term')
+    end
+    it 'performs a name, definition search boosting name' do
+      Term.create(name: 'Awesome Term', definition: 'New York')
+      Term.create(name: 'Manhattan', definition: 'Its kinda awesome')
+      Term.create(name: 'super Awesome Term', definition: 'still awesome')
+      Term.create(name: 'Yonkers', definition: 'broadway')
+      Term.create(name: 'awesome stupendous', definition: 'wall street')
+      Term.create(name: 'Queens', definition: 'Bronx')
+      Term.reindex
+      r = Term.search 'aweso', fields: ['name^10', 'definition']
+      expect(r.count).to eq(4)
+      expect(r[-1].name).to eq('Manhattan')
     end
   end
 end

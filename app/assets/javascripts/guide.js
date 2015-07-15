@@ -145,17 +145,17 @@ function bindInfiniteScrollBehavior() {
 }
 
 function loadMoreResults( more_button ) {
-    more_button.html("<div><img src='/assets/ajax-loader.gif'></div>")
-    url = getSearchURL( more_button.data('next-page') )
-    console.log( url )
+  more_button.html("<div><img src='/assets/ajax-loader.gif'></div>")
+  url = getSearchURL( more_button.data('next-page') )
+  console.log( url )
 
-    // replace the current "more" button with the new content, which
-    // will contain another "more" button
-    $.get(url, function(data) {
-         more_button.replaceWith( data )
-         bindInfiniteScrollBehavior()
-         highlightSearchString()
-    });
+  // replace the current "more" button with the new content, which
+  // will contain another "more" button
+  $.get(url, function(data) {
+       more_button.replaceWith( data )
+       bindInfiniteScrollBehavior()
+       highlightSearchString()
+  });
 }
 
 function highlightSearchString() {
