@@ -7,6 +7,7 @@ $(document).ready(function(){
   });
   function send_search_request_for_all(){
     search_val = $('.typeahead.tt-input').val()
+    $('#search_everything_results').empty();
     $.get('/search/search_all/' + search_val + '.json', function(data) {
       
       for (var i = 0; i < data.length; i++) {
