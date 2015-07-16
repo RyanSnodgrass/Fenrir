@@ -65,11 +65,11 @@ RSpec.describe 'Term routing', type: :routing do
 end
 
 RSpec.describe 'Search Routing', type: :routing do
-  it 'uses the explicit call for the route for the terms' do
-    expect(get: '/search/typeahead_terms/1').to route_to(
+  it 'uses the explicit call for the route for everything' do
+    expect(get: '/search/search_all/awesome').to route_to(
       controller: 'search',
-      action: 'typeahead_terms',
-      query: '1'
+      action: 'search_all',
+      query: 'awesome'
     )
   end
   it 'uses the explicit call for the route for reports' do

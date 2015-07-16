@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   delete 'datasets/:id' => 'datasets#destroy'  #SMM
   post 'datasets' => 'datasets#create' #SMM
 
-  get 'search/typeahead_terms/:query' => 'search#typeahead_terms'
+  get 'search/search_all/:query' => 'search#search_all'
   get 'search/typeahead_terms_all' => 'search#typeahead_terms_all'
   get 'search/typeahead_reports_all' => 'search#typeahead_reports_all'
 

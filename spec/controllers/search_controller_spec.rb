@@ -1,40 +1,39 @@
 require 'rails_helper'
 
 RSpec.describe SearchController do
-  describe 'typeahead_terms' do
+  describe 'search_all' do
     it 'renders json' do
       Report.create(name: 'Awesome Report', description: 'New York')
-      Report.create(name: 'Manhattan', description: 'Its kinda awesome')
-      Report.create(name: 'super Awesome Report', description: '')
-      Report.create(name: 'Yonkers', description: 'broadway')
-      Report.create(name: 'awesome stupendous', description: 'wall street')
-      Report.create(name: 'Queens', description: 'Bronx')
-      Term.create(name: 'awesome', definition: 'laguardia')
-      Term.create(name: 'Awesome Term')
-      Term.create(name: 'Manhattan', definition: 'Its kinda awesome')
-      Term.create(name: 'super Awesome Term', definition: 'still awesome')
-      Term.create(name: 'Yonkers', definition: 'broadway')
-      Term.create(name: 'awesome stupendous', definition: 'wall street')
-      Term.create(name: 'Queens', definition: 'Bronx')
       Report.reindex
-      Term.reindex
-      get :typeahead_terms, query: 'aweso'
+      get :search_all, query: 'aweso'
       parsed_body = response.header['Content-Type']
       expect(parsed_body).to eq('application/json; charset=utf-8')
     end
-    it 'renders json with the names of the terms' do
-      Term.create(name: 'my term', definition: 'New York')
+    it 'renders json with names and definition of the results', focus: true do
+      r1 = Report.create(name: 'Awesome node', description: 'New York')
+      r2 = Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+      t1 = Term.create(name: 'awesome', definition: 'laguardia')
+      t2 = Term.create(name: 'Queens', definition: 'Bronx')
+      Report.reindex
       Term.reindex
-      get :typeahead_terms, query: 'my'
+      get :search_all, query: 'aweso'
       parsed_body = JSON.parse(response.body)
-      expect(parsed_body).to eq(['my term'])
+      expect(parsed_body.first.first[1].key?('name')).to eq(true)
+      if parsed_body.first.key?('term')
+        expect(parsed_body.first.first[1].key?('definition')).to eq(true)
+      else
+        expect(parsed_body.first.first[1].key?('description')).to eq(true)
+      end
     end
-    it 'searches with partial matches' do
-      Term.create(name: 'Academic Calendar', definition: 'New York')
+    it 'definition matches are last' do
+      r1 = Report.create(name: 'Awesome Report', description: 'New York')
+      r2 = Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+      t1 = Term.create(name: 'awesome', definition: 'laguardia')
+      t2 = Term.create(name: 'Queens', definition: 'Bronx')
+      Report.reindex
       Term.reindex
-      get :typeahead_terms, query: 'Cale'
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body).to eq(['Academic Calendar'])
+      get :search_all, query: 'aweso'
+      expect(assigns(:results)[-1].name).to eq('Manhattan')
     end
   end
   describe 'typeahead_terms_all' do

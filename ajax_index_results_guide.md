@@ -66,3 +66,33 @@ $(document).ready(function(){
 });
 
 ```
+
+## Manually writing json in the controller
+```ruby
+# app/controllers/search_controller.rb
+class SearchController < ApplicationController
+  def search_all
+    @results = Report.search(
+      params[:query],
+      index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
+      fields: ['name^10', 'description', 'definition']
+    )
+    render json: @results.map { |r| [r.name, r['definition'] || r['description']] }
+  end
+end
+```
+## Second method to write json in controller
+Now it's using the `as_json` helper method
+```ruby
+# app/controllers/search_controller.rb
+class SearchController < ApplicationController
+  def search_all
+    @results = Report.search(
+      params[:query],
+      index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
+      fields: ['name^10', 'description', 'definition']
+    )
+    render json: @results.map { |r| [r.name, r['definition'] || r['description']] }
+  end
+end
+```
