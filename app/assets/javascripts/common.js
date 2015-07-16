@@ -57,7 +57,6 @@ $(document).ready(function(){
   if(typeof office_detail_json != 'undefined')  {
 
     $('#updateOfficeButton').click(function() {
-    //alert("updating term object")
       if (updateOfficeObject(office_detail_json) == false)
         return false;
 
@@ -118,7 +117,6 @@ function changetoviewmode() {
 }
 
 function clearValidationErrors() {
-  alert('hey inside clear validation errors')
   error_list_children = $('#error_list > li')
   error_list_children.remove();
   $('#error_list').hide();
@@ -250,7 +248,6 @@ function deleteOffice( officeid ) {
         window.location.href = '/' + myHashLink;
       },
       error: function(xhr, status, error) {
-           //alert(xhr.responseText)
         addValidationError( "alert", "Delete Office has errors: " + jQuery.parseJSON(xhr.responseText).message);
         showValidationErrors()
       }

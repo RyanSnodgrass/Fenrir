@@ -11,21 +11,42 @@ $(document).ready(function(){
       
       for (var i = 0; i < data.length; i++) {
         var ind_result = data[i];
-        var beginning_string = '<li>' +
-        '<h1>' + Object.keys(ind_result)  + '</h1>' +
-        '<h2>' + ind_result[Object.keys(ind_result)].name + '</h2>'
         if (Object.keys(ind_result) == 'term') {
-            var html = beginning_string + 
-                '<p>definition:' + ind_result['term'].definition + '</p>' +
-                '</li>';
+            var html = '<div class="searchResult termSearchResult">' +
+              '<div class="result_header">' +
+                '<div class="result_icon result_icon_term"></div>' +
+                '<h1 class="result_title">' + 
+                  '<a class="do_highlight res_title" href="../' + 
+                    Object.keys(ind_result) + 's/'+ ind_result[Object.keys(ind_result)].name + '">' +
+                    ind_result[Object.keys(ind_result)].name +
+                  '</a>' +
+                '</h1>' +
+              '</div>' +
+              '<div class="do_highlight result_body">' +
+                ind_result['term'].definition +
+              '</div>' +
+            '</div>'
         } 
         else {
-            var html = beginning_string + 
-                '<p>description:' + ind_result['report'].description + '</p>' +
-                '</li>';
+          var html = '<div class="searchResult reportSearchResult">' +
+            '<div class="result_header">' +
+              '<div class="result_icon result_icon_report"></div>' +
+              '<h1 class="result_title">' + 
+                '<a class="do_highlight res_title" href="../' + 
+                  Object.keys(ind_result) + 's/'+ ind_result[Object.keys(ind_result)].name + '">' +
+                  ind_result[Object.keys(ind_result)].name +
+                '</a>' +
+              '</h1>' +
+            '</div>' +
+            '<div class="do_highlight result_body">' +
+              ind_result['report'].description +
+            '</div>' +
+          '</div>'
         }
           $('#search_everything_results').append(html);
       }
     }, "json" );
   }
 });
+
+
