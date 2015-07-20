@@ -58,7 +58,7 @@ RSpec.describe ReportsController do
       @report = create(:report)
       expect{
         delete :destroy, report: @report, id: @report.name
-      }.to change(Report,:count).by(-1)
+      }.to change(Report, :count).by(-1)
     end
   end
   describe 'POST create' do
@@ -80,8 +80,7 @@ RSpec.describe ReportsController do
     it 'returns back the added report' do
       establish_current_user(user)
       @report = attributes_for(:report,
-        name: 'My Report'
-      )
+        name: 'My Report')
       post :create, report: @report
       expect(assigns(:report).name).to eq('My Report')
     end

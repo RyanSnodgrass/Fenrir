@@ -1,7 +1,13 @@
 # Documentation goes here
 class Term
   include Neo4j::ActiveNode
-  searchkick
+  searchkick word_start: [:name], autocomplete: [:name]
+  def search_data
+    {
+      name: name,
+      definition: definition
+    }
+  end
   property              :name, constraint: :unique
   property              :definition
   property              :source_system

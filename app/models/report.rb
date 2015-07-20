@@ -1,6 +1,12 @@
 class Report
   include Neo4j::ActiveNode
-  searchkick
+  searchkick  word_start: [:name], autocomplete: [:name]
+  def search_data
+    {
+      name: name,
+      description: description
+    }
+  end
   property              :name
   property              :description
   property              :tableau_link

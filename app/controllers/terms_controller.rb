@@ -42,8 +42,7 @@ class TermsController < ApplicationController
 
   def search
     # puts params[:search_query]
-    @results = Term.search params[:search_query], fields: [:name]
-    logger.debug(@results.first)
+    @results = Term.search(params[:search_query], field: ["name^3", "definition"])
     render partial: "/guide/partial_search", locals: { results: @results || [] }, layout: false
   end
 

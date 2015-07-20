@@ -117,13 +117,16 @@ RSpec.describe TermsController do
   describe 'GET search' do
     it 'returns with a partial template' do
       @term = create(:term)
+      @term.reindex
+      Term.reindex
+      Term.searchkick_index.refresh
       get :search, { search_query: @term.name }
       expect(response).to render_template(:partial => '_partial_search')
     end
     it 'returns a search result class in the search results' do
       @term = create(:term)
-      # @term.reindex
-      # Term.reindex
+      @term.reindex
+      Term.reindex
       Term.searchkick_index.refresh
       get :search, { search_query: @term.name }
       expect(assigns(:results)).to be_a_kind_of(Searchkick::Results)

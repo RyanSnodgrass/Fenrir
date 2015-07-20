@@ -19,6 +19,7 @@
 //= require jquery.cookie
 //= require select2
 //= require jquery-readyselector
+//= require typeahead.bundle.min
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

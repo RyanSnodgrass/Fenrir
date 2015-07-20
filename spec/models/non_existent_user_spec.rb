@@ -5,10 +5,10 @@ describe 'NonExistentUser class' do
   it 'is valid' do
     expect(na).to be_valid
   end
-  it "cannot do anything" do
+  it 'cannot do anything' do
     expect(na.can(:anything)).to eq(false)
   end
-  it "is logged in" do
+  it 'is logged in' do
     expect(na.logged_in?).to eq(true)
   end
   it 'defaults ned_id to NonExistentUser' do
