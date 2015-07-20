@@ -15,7 +15,11 @@ Our main search bar can be anywhere you want to call your ajax from and display 
 # app/controllers/search_controller.rb
 class SearchController < ApplicationController
   def search_terms
-    @results = Term.search params[:query], fields: [{ name: :word_start }]
+    @results = Report.search(
+      params[:query],
+      index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
+      fields: ['name^10', 'description', 'definition']
+    )
     # if you don't have a search feature, you can simply substitute for 
     # `@results = Term.all` as the principle is the same
     render partial: "search_results", locals: { results: @results || [] }, layout: false
@@ -68,6 +72,7 @@ $(document).ready(function(){
 ```
 
 ## Manually writing json in the controller
+After we determined that rendering partials was too slow, we decided to switch gears and render JSON in the controller and insert this json directly into the DOM. We first tried writing the JSON by hand:
 ```ruby
 # app/controllers/search_controller.rb
 class SearchController < ApplicationController
@@ -80,9 +85,10 @@ class SearchController < ApplicationController
     render json: @results.map { |r| [r.name, r['definition'] || r['description']] }
   end
 end
+
 ```
 ## Second method to write json in controller
-Now it's using the `as_json` helper method
+Then we found the `as_json` helper method.
 ```ruby
 # app/controllers/search_controller.rb
 class SearchController < ApplicationController
@@ -92,7 +98,120 @@ class SearchController < ApplicationController
       index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
       fields: ['name^10', 'description', 'definition']
     )
-    render json: @results.map { |r| [r.name, r['definition'] || r['description']] }
+    render json: @results.as_json(only: [:name, :definition, :description])
   end
 end
+
+```
+
+## Using Ajax to directly insert into DOM
+The eventual solution to writing to the DOM with jquery started with the `as_json` solution from above
+```ruby
+# app/controllers/search_controller.rb
+class SearchController < ApplicationController
+  def search_all
+    @results = Report.search(
+      params[:query],
+      index_name: [Report.searchkick_index.name, Term.searchkick_index.name],
+      fields: ['name^10', 'description', 'definition']
+    )
+    render json: @results.as_json(only: [:name, :definition, :description])
+  end
+end
+
+```
+Which renders JSON that looks like this. Keep in mind, this is basically an array of hashes.
+```json
+[
+    {
+        "term": {
+            "name": "awesome term",
+            "definition": "<p>asdfkjhasdlkjfhasd</p>",
+            "id": "1f501c19-f0ed-4b8e-a957-6207db72fd77"
+        }
+    },
+    {
+        "report": {
+            "name": "report awesome",
+            "description": null,
+            "id": "c6fc08cb-8af4-486a-b40f-5183a3c2d3d7"
+        }
+    },
+    {
+        "report": {
+            "name": "Algonquin",
+            "description": "the report is pretty awesome",
+            "id": "0d0681bc-c957-4407-bc75-2bd103dddfe1"
+        }
+    },
+    {
+        "term": {
+            "name": "brooklyn",
+            "definition": "i dont know if you know this or not, but its pretty awesome",
+            "id": "e2985ca4-9a05-4a5d-b779-b01d5994a0bf"
+        }
+    },
+    {
+        "report": {
+            "name": "newer report",
+            "description": "<p>Numerous studies have shown that this report is 'awesome.'</p>",
+            "id": "01a62175-45a2-4ee3-956c-dff2a5e7bc32"
+        }
+    }
+]
+```
+In our javascript
+```javascript
+// app/assets/javascripts/search.js
+$(document).ready(function(){
+  $('#mainsearchbar').bind("keypress",function(e){
+    if(e.keyCode == 13){
+      send_search_request_for_all()
+    }
+  });
+});
+  function send_search_request_for_all(){
+    search_val = $('#mainsearchbar').val() // grab the search input
+    $('#search_results').empty(); // clear whatever was in the search results from the previous query
+    $.get('/search/search_all/' + search_val + '.json', function(data) {
+      
+      for (var i = 0; i < data.length; i++) { // loop through the json's hash objects as Javascript doesn't have a simple `.each` function like ruby does
+        var ind_result = data[i];
+        if (Object.keys(ind_result) == 'term') { // There are a lot of strange(to a ruby dev) keywords thrown around here. This one grabs the first key and checks whether the hash is a `term` or `report`
+            var html = '<div class="searchResult termSearchResult">' + // this defines the html as a string, parses the json objects and saves the string as a variable `html`
+              '<div class="result_header">' +
+                '<div class="result_icon result_icon_term"></div>' +
+                '<h1 class="result_title">' + 
+                  '<a class="do_highlight res_title" href="../' + 
+                    Object.keys(ind_result) + 's/'+ ind_result[Object.keys(ind_result)].name + '">' +
+                    ind_result[Object.keys(ind_result)].name +
+                  '</a>' +
+                '</h1>' +
+              '</div>' +
+              '<div class="do_highlight result_body">' +
+                ind_result['term'].definition +
+              '</div>' +
+            '</div>'
+        } 
+        else {
+          var html = '<div class="searchResult reportSearchResult">' +
+            '<div class="result_header">' +
+              '<div class="result_icon result_icon_report"></div>' +
+              '<h1 class="result_title">' + 
+                '<a class="do_highlight res_title" href="../' + 
+                  Object.keys(ind_result) + 's/'+ ind_result[Object.keys(ind_result)].name + '">' +
+                  ind_result[Object.keys(ind_result)].name +
+                '</a>' +
+              '</h1>' +
+            '</div>' +
+            '<div class="do_highlight result_body">' +
+              ind_result['report'].description +
+            '</div>' +
+          '</div>'
+        }
+          $('#search_results').append(html); // appends the `html` dom string for each json hash object
+      }
+    }, "json" );
+  }
+});
 ```
