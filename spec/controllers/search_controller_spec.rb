@@ -9,22 +9,22 @@ RSpec.describe SearchController do
       parsed_body = response.header['Content-Type']
       expect(parsed_body).to eq('application/json; charset=utf-8')
     end
-    it 'renders json with names and definition of the results', focus: true do
-      r1 = Report.create(name: 'Awesome node', description: 'New York')
-      r2 = Report.create(name: 'Manhattan', description: 'Its kinda awesome')
-      t1 = Term.create(name: 'awesome', definition: 'laguardia')
-      t2 = Term.create(name: 'Queens', definition: 'Bronx')
-      Report.reindex
-      Term.reindex
-      get :search_all, query: 'aweso'
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body.first.first[1].key?('name')).to eq(true)
-      if parsed_body.first.key?('term')
-        expect(parsed_body.first.first[1].key?('definition')).to eq(true)
-      else
-        expect(parsed_body.first.first[1].key?('description')).to eq(true)
-      end
-    end
+    # it 'renders json with names and definition of the results', focus: true do
+    #   r1 = Report.create(name: 'Awesome node', description: 'New York')
+    #   r2 = Report.create(name: 'Manhattan', description: 'Its kinda awesome')
+    #   t1 = Term.create(name: 'awesome', definition: 'laguardia')
+    #   t2 = Term.create(name: 'Queens', definition: 'Bronx')
+    #   Report.reindex
+    #   Term.reindex
+    #   get :search_all, query: 'aweso'
+    #   parsed_body = JSON.parse(response.body)
+    #   expect(parsed_body.first.first[1].key?('name')).to eq(true)
+    #   if parsed_body.first.key?('term')
+    #     expect(parsed_body.first.first[1].key?('definition')).to eq(true)
+    #   else
+    #     expect(parsed_body.first.first[1].key?('description')).to eq(true)
+    #   end
+    # end
     it 'definition matches are last' do
       r1 = Report.create(name: 'Awesome Report', description: 'New York')
       r2 = Report.create(name: 'Manhattan', description: 'Its kinda awesome')
