@@ -2,8 +2,8 @@ require "will_paginate/array"
 
 class ReportsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_report,   only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:show, :create, :destroy, :update]
+  before_action :set_report,   only: [:show, :update, :destroy, :upload]
+  before_action :authenticate, only: [:show, :create, :destroy, :update, :upload]
 
   def update
     if @report.update(report_params)
@@ -54,7 +54,9 @@ class ReportsController < ApplicationController
     # logger.debug("full report hash: #{@report}")
     # if @report["success"] 
 
-    #   # @report_photo = PhotoMapper.new( @report["report"]["id"], @report["report"]["timestamp"].present? ? @report["report"]["timestamp"] : nil )
+    # PhotoMapper Class needs the timestamp for the specific report object
+    # to correctly grab the corresponding timestamped picture
+    @report_photo = PhotoMapper.new(@report.name, @report.timestamp)
 
       ## GET Report's Associated Terms
       # term_report_json = @report["terms"]
@@ -145,21 +147,20 @@ class ReportsController < ApplicationController
     # end
   end
 
+  # during upload, the photomapper class creates a new timestamp, passes it
+  # to the report controller so it can saved on the report object.
   def upload
-    r = PhotoMapper.new( params[:id] )
+    photomapper = PhotoMapper.new(params[:id])
     update_body = {
-      "report" => {
-        "name" => params["name"],
-        "timestamp" => r.timestamp.to_i
-      }
+      "timestamp" => photomapper.timestamp.to_i
     }
     if params[:image].present?
-      r.uploader = params[:image]
-      logger.info("before image upload: " + r.image_url)
-      r.save
-      Muninn::Adapter.put( "/reports/id/#{params[:id]}", session[:cas_user], session[:cas_pgt], update_body.to_json )
+      photomapper.uploader = params[:image]
+      photomapper.save
+      @report.update(update_body)
+      @report.save
     end
-    redirect_to :back
+    redirect_to "/reports/#{@report.name}"
   end
 
   private

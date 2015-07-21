@@ -14,14 +14,12 @@ $(document).ready(function(){
       type: 'POST',
       data: { "report": report_object },
       success: function (data) {
-        console.log('success create report')
         addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
         showSuccessMessage();
         var url = escape('/reports/'+ report_object.name)
         window.location = url;
       },
       error: function( xhr, ajaxOptions, thrownError) {
-        console.log('non success create report')
         addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
         showValidationErrors()
       }
@@ -174,14 +172,12 @@ $(".reports.show").ready(function() {
       type: 'POST',
       data: { "report": report_object },
       success: function (data) {
-        console.log('success create report')
         addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
         showSuccessMessage();
         var url = escape('/reports/'+ report_object.name)
         window.location = url;
       },
       error: function( xhr, ajaxOptions, thrownError) {
-        console.log('non success create report')
         addValidationError( "alert", "Added Report, " +report_object.name+ ", has error: " + xhr.responseText)
         showValidationErrors()
       }
@@ -193,14 +189,12 @@ $(".reports.show").ready(function() {
       type: 'PUT',
       data: {'report': report_object },
       success: function (data) {
-        console.log("succcess report")
         var url = escape(report_object.name);
         window.location.href = url;
         addSuccessMessage("success", "<b>" + report_object.name + "</b>" +  " updated successfully. " );
         showSuccessMessage();
       },
       error: function( xhr, ajaxOptions, thrownError) {
-        console.log('non success report')
         addValidationError( "alert", "Update Report has errors: " + xhr.responseText);
         showValidationErrors();
       }
@@ -211,14 +205,12 @@ $(".reports.show").ready(function() {
       url:  $('#mytinyDelete').attr('ajax_path'),
       type: 'DELETE',
       success: function(data, status, xhr){
-        console.log('success report delete')
         addSuccessMessage("success", "<b>" + data.message + ". Please wait for Reports Page display.</br>" )
         showSuccessMessage();
         window.location.href = '/users/myprofile'
       },
       error: function(xhr, status, error) {
         window.location.href = '/users/myprofile'
-        console.log('non success report delete')
         // addValidationError( "alert", "Report delete has errors: " + xhr.responseText);
         // showValidationErrors();
       }
