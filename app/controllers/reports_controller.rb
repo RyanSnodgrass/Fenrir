@@ -1,5 +1,6 @@
-require "will_paginate/array"
+require 'will_paginate/array'
 
+# Documentation goes here
 class ReportsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :set_report,   only: [:show, :update, :destroy, :upload]
