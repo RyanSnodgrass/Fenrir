@@ -17,14 +17,12 @@ $(document).ready(function(){
        type: 'POST',
        data: { "term": term_object },
        success: function (data) {
-        console.log("success create term")
         addSuccessMessage("success", "<b>Term " + term_object.name +   " successfully. Please wait for Term Detail page display.</b>");
         showSuccessMessage();
         var url = escape('/terms/'+ term_object.name);
         window.location = url;
      },
        error: function( xhr, ajaxOptions, thrownError) {
-       console.log("not success create term")
        addValidationError( "alert", "Added Term, " +term_object.name+ ", has error: " + xhr.responseText);
        showValidationErrors()
      }
@@ -40,7 +38,6 @@ $(".terms.show").ready(function() {
   $('#search1').watermark('Search');
 
   $('#updateTermButton').click(function() {
-    console.log('update button clicked')
     clearValidationErrors();
     var term_object = {}
     if (updateTermObject(term_object) == false){
@@ -132,26 +129,22 @@ $(".terms.show").ready(function() {
   }
   function updateTerm( term_object ) {
     $.ajax({
-      // console.log('inside ajax')
-
-        url: term_object.id,
-        type: 'PUT',
-        data: { "term": term_object
-        },
-       // data: { "termJSON": term_object },
-        //dataType: 'json',
-        success: function (data) {
-           var url = escape(term_object.name);
-           window.location.href = url;
-           addSuccessMessage("success", "<b>" + term_object.name + "</b>" +  " updated successfully. " );
-           showSuccessMessage();
-           console.log("success update term");
-        },
-        error: function( xhr, ajaxOptions, thrownError) {
-           addValidationError( "alert", "Update term has errors: " + xhr.responseText);
-           showValidationErrors(); 
-          console.log("not success update term");
-        }
+      url: term_object.id,
+      type: 'PUT',
+      data: { "term": term_object
+      },
+     // data: { "termJSON": term_object },
+      //dataType: 'json',
+      success: function (data) {
+         var url = escape(term_object.name);
+         window.location.href = url;
+         addSuccessMessage("success", "<b>" + term_object.name + "</b>" +  " updated successfully. " );
+         showSuccessMessage();
+      },
+      error: function( xhr, ajaxOptions, thrownError) {
+         addValidationError( "alert", "Update term has errors: " + xhr.responseText);
+         showValidationErrors(); 
+      }
     })
   }
   function deleteTerm( termid ) {
@@ -190,11 +183,9 @@ function bindTypeaheadSearchBehavior() {
       if ( pendingPartialSearch != null ) {
          clearTimeout( pendingPartialSearch );  // stop the pending one
       }
-      console.log( typed_search_val );
       // set a new search to execute in 200ms  
       pendingPartialSearch = setTimeout( 
         function() {
-          console.log('executre filter inside bindtypeahead');
           executeFilter(typed_search_val);
         }, 
         key_press_delay 
@@ -205,7 +196,6 @@ function bindTypeaheadSearchBehavior() {
 
 function executeFilter(t_s_v) {
   // var searchURL = getSearchURL(1)
-  // console.log(searchURL)
   displayLoading()
   $.get( '/terms/search', {'search_query': t_s_v }, function(data) {
     $('#search_results').html(data)

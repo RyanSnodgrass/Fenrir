@@ -13,6 +13,24 @@ describe 'Report Class' do
     @reloaded_report = Report.find_by(name: report.name)
     expect(@reloaded_report.terms).to eq([term])
   end
+
+  context 'for selecting terms' do
+    it 'parses for select2 into id/text pairs'  do
+      r = create(:report)
+      t = create(:term)
+      r.terms << t
+      expect(r.selectable_terms).to eq([{id: t.id, text: t.name}].to_json)
+    end
+    it 'parses for select2 into id/text pairs for 2 terms' do
+      r = create(:report)
+      t = create(:term)
+      t2 = Term.create(name: 'my term')
+      r.terms << t
+      r.terms << t2
+      expect(r.selectable_terms).to eq([{id: t.id, text: t.name}, {id: t2.id, text: t2.name}].to_json)
+    end
+  end
+
   context 'search feature' do
     it 'uses search to find reports' do
       @report = create(:report)
@@ -21,7 +39,6 @@ describe 'Report Class' do
       results = Report.search @report.name
       expect(results.first.name).to eq(@report.name)
     end
-
     it 'uses search for specific field like description' do
       @report = Report.new
       @report.name = 'my report'

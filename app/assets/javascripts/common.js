@@ -27,18 +27,6 @@ $(document).ready(function(){
 
   }
 
- if (typeof term_gov_json != 'undefined')  {
-   $('.term_input').select2({
-        data:term_gov_json,
-        multiple: true,
-        width: "500px"
-    });
-
-    $('.term_input').val(function() {
-      $(this).data().select2.updateSelection( $(this).data('init') )
-    });
-
-  }
   if (typeof security_roles_json != 'undefined')  {
    $('.role_input').select2({
         data:security_roles_json,

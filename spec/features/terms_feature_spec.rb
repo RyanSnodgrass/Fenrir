@@ -63,13 +63,16 @@ describe 'Term Feature' do
     end
     it 'updates a term', js: true do
       login(user)
+      @pg = create(:permission_group)
       visit(term_path(term.name))
       select "Limited", from: 'access_designation'
+      select "#{@pg.name}", from: 'permission-group'
       click_button('Update Term')
       wait_for_ajax
       visit(term_path(term.name))
       wait_for_ajax
       expect(page).to have_select('access_designation', selected: 'Limited')
+      expect(page).to have_select('permission-group', selected: "#{@pg.name}")
       page.driver.reset!
     end
     it 'updates the term name', js: true do

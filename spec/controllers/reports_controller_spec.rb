@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'net/http'
 # require 'json'
 RSpec.describe ReportsController do
   let(:report) { create(:report) }
@@ -19,6 +20,12 @@ RSpec.describe ReportsController do
       term = create(:term)
       termtwo = create(:term, name: 'Academic Year')
       expect(assigns(:terms)).to include(term, termtwo)
+    end
+    it 'grabs a photo for a report with timestamp' do
+      establish_current_user(user)
+      @report = Report.create(name: 'my term', timestamp: 123456789)
+      get :show, id: @report.name
+      expect(assigns(:report_photo).image_url).to include('123456789')
     end
   end
   describe 'PUT update' do
@@ -83,6 +90,45 @@ RSpec.describe ReportsController do
         name: 'My Report')
       post :create, report: @report
       expect(assigns(:report).name).to eq('My Report')
+    end
+  end
+  describe 'upload' do
+    it 'finds specified report' do
+      establish_current_user(user)
+      put :upload, id: report.name
+      expect(assigns(:report)).to eq(report)
+    end
+    it 'updates new report object with timestamp' do
+      establish_current_user(user)
+      @report = create(:report)
+      expect(@report.timestamp).to eq(nil)
+      put :upload, 
+        id: @report.name,
+        image: File.open('app/assets/images/nd-gray.png')
+      @report.reload
+      current_time = Time.now.to_i
+      expect(@report.timestamp).to be > 1437503331
+    end
+    it 'updates a report object that already has timestamp' do
+      establish_current_user(user)
+      @report = Report.create(name: 'my term', timestamp: 123456789)
+      put :upload, 
+        id: @report.name,
+        image: File.open('app/assets/images/nd-gray.png')
+      @report.reload
+      expect(@report.timestamp).to be > 1437503331
+    end
+    it 'uploads a file' do
+      establish_current_user(user)
+      @report = Report.create(name: 'my term')
+      put :upload, 
+        id: @report.name,
+        image: fixture_file_upload('app/assets/images/nd-gray.png')
+      @report.reload
+      @report_photo = PhotoMapper.new(@report.name, @report.timestamp)
+      url = URI(@report_photo.image_url)
+      response = Net::HTTP.get_response(url)
+      expect(response.code).to eql('200')
     end
   end
 end
