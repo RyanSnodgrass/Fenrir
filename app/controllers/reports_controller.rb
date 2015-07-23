@@ -29,7 +29,6 @@ class ReportsController < ApplicationController
     return @tableau_parse
   end
 
-
   def create
     @report = Report.new(report_params)
     if @report.save

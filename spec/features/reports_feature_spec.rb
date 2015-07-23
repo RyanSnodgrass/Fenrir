@@ -25,7 +25,21 @@ describe 'Report Page' do
       expect(page).to have_content('Sample Image')
       expect(page).to have_selector('img')
     end
+    it 'has terms', js: true do
+      login(user)
+      @report = create(:report)
+      t = create(:term)
+      @report.terms << t
+      visit(report_path(@report.name))
+      expect(page).to have_content('Data Governance Terms')
+      expect(page).to have_content(@report.terms.first.name)
+      check "editmode"
+      within('ul.select2-choices') do
+        expect(page).to have_selector('li.select2-search-choice', text: @report.terms.first.name)
+      end
+    end
   end
+
   ## inorder for check boxes to be available, you have to wrap the input
   ## tags in a 'fieldset' tag. check the docs at 
   ## http://foundation.zurb.com/docs/components/switch.html#accessibility

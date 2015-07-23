@@ -8,13 +8,13 @@ $(document).ready(function(){
     $('a.close-reveal-modal').trigger('click');
     createReport(report_new);
   });
-  function createReport( report_object ) {
+  function createReport(report_object) {
     $.ajax({
       url : '/reports',
       type: 'POST',
       data: { "report": report_object },
       success: function (data) {
-        addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>")
+        addSuccessMessage("success", "<b>Report " + report_object.name +   " successfully. Please wait for report Detail page display.</b>");
         showSuccessMessage();
         var url = escape('/reports/'+ report_object.name)
         window.location = url;
@@ -28,6 +28,27 @@ $(document).ready(function(){
 });
 
 $(".reports.show").ready(function() {
+  // if ($('.report_term_input').length) {
+    var term_names_array = [];
+    $.ajax({
+      url: '/search/typeahead_terms_all',
+    }).done(function(data) {
+      for (index = 0; index < data.length; ++index) {
+        term_names_array.push({ id: index, text: data[index] });
+      }
+      $('.report_term_input').select2('enable', true);
+    });
+    $('.report_term_input').select2({
+      dataType: 'json',
+      data: term_names_array,
+      multiple: true,
+      width: "500px"
+    });
+  // }
+
+  $('.report_term_input').val(function() {
+    $(this).data().select2.updateSelection( $(this).data('init') )
+  });
 
   $('#image').change( function() {
     $('form#report_image_upload').submit();
@@ -123,15 +144,6 @@ $(".reports.show").ready(function() {
     //     }
     //   }
     // }
-
-    // report_object["report_type"] = $('#type').val();
-
-    // report_object["tableau_link"] = $('#tableaulink').val();
-    // report_object["datasource"] = $('#datasource').val();
-
-    // report office owner
-    // report_object["offices"] = []
-    // report_object["offices"].push( { name: selected_office, stake: "Responsible"} )
 
     // By default, we are setting write ability to true for all associated role nodes
     // report_object["allows_access_with"] = []

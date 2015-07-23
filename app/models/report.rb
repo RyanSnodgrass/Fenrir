@@ -21,4 +21,12 @@ class Report
   property              :updated_by
   validates_presence_of :name
   has_many :in,         :terms
+
+  def selectable_terms
+    @selectable_terms = []
+    self.terms.each do |t| 
+      @selectable_terms << {id: t.id, text: t.name}
+    end
+    @selectable_terms.to_json
+  end
 end
