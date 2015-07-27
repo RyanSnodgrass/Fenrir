@@ -25,7 +25,7 @@ describe 'Report Page' do
       expect(page).to have_content('Sample Image')
       expect(page).to have_selector('img')
     end
-    it 'has terms', js: true do
+    it 'has terms', js: true, focus: true do
       login(user)
       @report = create(:report)
       t = create(:term)

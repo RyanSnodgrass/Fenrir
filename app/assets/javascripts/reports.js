@@ -107,6 +107,10 @@ $(".reports.show").ready(function() {
     tinymce.triggerSave();
     report_object["name"] = $('#name-edit').val();
     report_object['description'] = tinymce.get('description').getContent()
+    report_object['terms'] = []
+    for (var j = 0; j < $('.report_term_input').select2('data').length; j++ ) {
+      report_object['terms'].push($('.report_term_input').select2('data')[j].text)
+    }
     // $('.editable').each(function() {
     //   id = $(this).attr('id');
     //   if ( id ) {

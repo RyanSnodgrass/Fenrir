@@ -50,6 +50,17 @@ RSpec.describe ReportsController do
       expect(@report.description).to eq('Super Dooper')
       expect(assigns(:report).name).to eq('My Report')
     end
+    it 'updates terms association' do
+      establish_current_user(user)
+      @report = create(:report)
+      @term = Term.create(name: 'my term')
+      @term2 = Term.create(name: 'your term')
+      my_changed_report = attributes_for(
+        :report, name: 'My Report', terms: [@term.name, @term2.name])
+      put :update, id: @report.name, report: my_changed_report
+      @report.reload
+      expect(@report.terms).to eq([@term, @term2])
+    end
   end
   describe 'DELETE destroy' do
     it 'requires authentication' do
