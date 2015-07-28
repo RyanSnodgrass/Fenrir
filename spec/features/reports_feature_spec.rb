@@ -25,7 +25,7 @@ describe 'Report Page' do
       expect(page).to have_content('Sample Image')
       expect(page).to have_selector('img')
     end
-    it 'has terms', js: true, focus: true do
+    it 'has terms', js: true do
       login(user)
       @report = create(:report)
       t = create(:term)
@@ -60,13 +60,11 @@ describe 'Report Page' do
     visit '/'
     find('li.has-dropdown').hover
     click_link('newreportlink')
-    wait_for_ajax
     within('#newreportmodal') do
       expect(page).to have_content('Add New Report')
       fill_in('rname', with: 'My New Report')
       click_button('Save Report')
     end
-    wait_for_ajax
     expect(page).to have_css('.reports.show')
     expect(page).to have_content('My New Report')
   end
@@ -80,6 +78,16 @@ describe 'Report Page' do
     expect(page).to have_content('My Different Name')
     expect(page).to have_content('My Description here')
   end
+  it "updates a report's terms", js: true do
+    login(user)
+    @report = create(:report)
+    t = create(:term)
+    visit(report_path(@report.name))
+    check 'editmode'
+    select2(t.name, '#s2id_autogen1')
+    click_button('Update Report')
+    expect(page).to have_content(t.name)
+  end
   it 'deletes report', js: true do
     login(user)
     @report = create(:report)
@@ -87,7 +95,6 @@ describe 'Report Page' do
     check "editmode"
     click_button('Delete Report')
     click_button('Yes')
-    wait_for_ajax
     expect(page).to have_content('My User Name')
     expect(@report).to_not exist
   end
