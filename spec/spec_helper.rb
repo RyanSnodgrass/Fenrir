@@ -40,10 +40,21 @@ module WaitForAjax
     page.evaluate_script('jQuery.active').zero?
   end
 end
+module Select2Helpers
+  def select2(value, element_selector)
+    select2_container = first("#{element_selector}")
+    select2_container.find(".select2-choices").click
+    find(:xpath, "//body").find("input.select2-input").set(value)
+    page.execute_script(%|$("input.select2-input:visible").keyup();|)
+    drop_container = ".select2-results"
+    find(:xpath, "//body").find("#{drop_container} li", text: value).click
+  end
+end
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.include LoginHelper
   config.include WaitForAjax
+  config.include Select2Helpers
   config.include FactoryGirl::Syntax::Methods
   ENV["RAILS_ENV"] = 'rspec'
 

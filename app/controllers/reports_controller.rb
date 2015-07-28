@@ -7,7 +7,14 @@ class ReportsController < ApplicationController
   before_action :authenticate, only: [:show, :create, :destroy, :update, :upload]
 
   def update
+    incoming_terms = []
+    if report_params['terms'].present?
+      report_params['terms'].each do |t|
+        incoming_terms << Term.find_by(name: t)
+      end
+    end
     if @report.update(report_params)
+      @report.terms = incoming_terms
       @report.save
       render status: response.code, json: response.body
       head :ok
@@ -179,6 +186,7 @@ class ReportsController < ApplicationController
       :gridsize,
       :timestamp,
       :embedJSON,
-      :terms)
+      { terms: [] }
+    )
   end
 end
